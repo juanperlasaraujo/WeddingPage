@@ -1,153 +1,156 @@
-/* ========================
-   General Reset & Fonts
-======================== */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
+/* Base */
 body {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
-    line-height: 1.6;
-    background: #fdfcfb;
-    color: #333;
+  font-family: 'Montserrat', sans-serif;
+  margin:0;
+  padding:0;
+  background-color: #ffffff;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(214, 237, 245, 0.08),
+    rgba(214, 237, 245, 0.08) 2px,
+    transparent 2px,
+    transparent 25px
+  );
 }
 
-/* ========================
-   Language Switch
-======================== */
-.language-switch {
-    position: fixed;
-    top: 1rem;
-    right: 1rem;
-    font-size: 1rem;
-    background: rgba(255,255,255,0.9);
-    padding: 0.5rem 1rem;
-    border-radius: 25px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    z-index: 1000;
+/* Ribbon Base */
+.ribbon {
+  display:flex;
+  justify-content:center;
+  gap: 2rem;
+  padding:0.6rem 0;
+  font-weight:600;
+  box-shadow:0 2px 6px rgba(0,0,0,0.1);
+  background: rgba(214, 237, 245,0.95);
+  z-index:100;
 }
 
-.language-switch a {
-    text-decoration: none;
-    color: #333;
-    font-weight: bold;
-    margin: 0 0.5rem;
-    transition: color 0.3s;
+.ribbon-right {
+  position: fixed;
+  top: 20px; /* small offset from top */
+  right: 20px; /* small offset from right */
+  display: flex;
+  gap: 1.5rem; /* space between navigation and language menu */
+  z-index: 100;
+  font-weight: 600;
 }
 
-.language-switch a:hover {
-    color: #b55a4e;
+.ribbon-menu a {
+  text-decoration: none;
+  color: #ffffff; /* subtle against background */
+  background: rgba(0,0,0,0.3); /* semi-transparent for readability */
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  transition: background 0.3s, color 0.3s;
 }
 
-/* ========================
-   Hero Section
-======================== */
+.ribbon-menu a:hover {
+  background: rgba(0,0,0,0.6);
+  color: #f4e1a4;
+}
+
+/* Optional: adjust spacing between the two menus */
+.ribbon-language {
+  margin-left: 1rem;
+}
+
+/* Hero */
 .hero {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 4rem 1rem;
-    background: linear-gradient(to bottom right, #f7e9e3, #fdfcfb);
+  position: relative;
+  text-align:center;
+  margin-top:4.0rem; /* offset for ribbons */
+}
+.hero-img {
+  width:100%;
+  height:auto;
+}
+.hero-text {
+  position:absolute;
+  top:580px;
+  left:50%;
+  transform:translateX(-50%);
+  background: rgba(255,255,255,0.85);
+  border-radius:15px;
+  padding:1rem 2rem;
+  text-align: center;
+}
+.hero-text h1 {
+  font-family:'Great Vibes', cursive;
+  font-size:2.5rem;
+  color:#7ac7d9;
+}
+.hero-text p {
+  font-weight:600;
+  color:#333;
+}
+.btn {
+  display:inline-block;
+  background:#f4e1a4;
+  color:#333;
+  padding:0.5rem 1rem;
+  margin-top:0.5rem;
+  border-radius:8px;
+  text-decoration:none;
+  font-weight:600;
+}
+.btn:hover {
+  background:#d6edf5;
+  color:#fff;
 }
 
-.hero h1 {
-    font-size: 2.5rem;
-    color: #b55a4e;
-    margin-bottom: 1rem;
+/* Sections */
+.section {
+  padding:3rem 1rem;
+  text-align: center;
+}
+/* Section headings */
+.section h2 {
+  font-family: 'Great Vibes', cursive;
+  font-size: 2rem; /* adjust size as needed */
+  color: #7ac7d9; /* same readable skyblue as hero for elegance */
+  margin-bottom: 1rem;
+  text-align: center;
+}
+.highlight-box {
+  background-color:#f5f5f5;
+  border-radius:12px;
+  padding:2rem;
+  margin:2rem auto;
+  text-align: center;
+}
+.interspersed-photo {
+  width:80%;
+  display:block;
+  margin:1.5rem auto;
+  border-radius:12px;
 }
 
-.hero p {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
+/* Form */
+form {
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
+  max-width:500px;
+  margin:0 auto;
+  text-align: center;
+}
+input, select, textarea, button {
+  padding:0.8rem;
+  border-radius:8px;
+  border:1px solid #ccc;
+}
+button {
+  background:#d6edf5;
+  border:none;
+  font-weight:600;
+  cursor:pointer;
+}
+button:hover {
+  background:#f4e1a4;
 }
 
-.hero img {
-    max-width: 90%;
-    height: auto;
-    border-radius: 15px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-
-/* ========================
-   Info Section
-======================== */
-.info {
-    padding: 3rem 1rem;
-    text-align: center;
-}
-
-.info h2 {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    color: #b55a4e;
-}
-
-.info p {
-    font-size: 1.1rem;
-    margin-bottom: 0.5rem;
-}
-
-/* ========================
-   RSVP Form
-======================== */
-.rsvp {
-    padding: 3rem 1rem;
-    background: #fefaf8;
-    text-align: center;
-}
-
-.rsvp h2 {
-    font-size: 2rem;
-    color: #b55a4e;
-    margin-bottom: 1rem;
-}
-
-.rsvp form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    max-width: 400px;
-    margin: 0 auto;
-}
-
-.rsvp input, 
-.rsvp select, 
-.rsvp button {
-    width: 100%;
-    padding: 0.8rem;
-    font-size: 1rem;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    outline: none;
-    transition: all 0.3s;
-}
-
-.rsvp input:focus,
-.rsvp select:focus {
-    border-color: #b55a4e;
-    box-shadow: 0 0 5px rgba(181,90,78,0.5);
-}
-
-.rsvp button {
-    background: #b55a4e;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.rsvp button:hover {
-    background: #933e33;
-}
-
-/* ========================
-   Map Section
-======================== */
+/* Map Section */
 .map {
     padding: 3rem 1rem;
     text-align: center;
@@ -161,39 +164,12 @@ body {
     border-radius: 10px;
 }
 
-/* ========================
-   Media Queries (Responsive)
-======================== */
-@media(min-width: 768px) {
-    .hero {
-        flex-direction: row;
-        justify-content: space-around;
-        text-align: left;
-    }
-
-    .hero img {
-        max-width: 40%;
-    }
-
-    .hero h1 {
-        font-size: 3rem;
-    }
-
-    .hero p {
-        font-size: 1.3rem;
-    }
-
-    .rsvp form {
-        flex-direction: row;
-        flex-wrap: wrap;
-        gap: 1rem;
-    }
-
-    .rsvp input, .rsvp select {
-        flex: 1 1 48%;
-    }
-
-    .rsvp button {
-        flex: 1 1 100%;
-    }
+/* Responsive */
+@media (max-width:768px){
+  .hero-text h1 { font-size:2rem; }
+  .hero-text { 
+    top:100px;
+    padding:0.8rem 1.2rem; }
+  .section h2 { font-size:1.6rem; }
+  .interspersed-photo { width:100%; }
 }

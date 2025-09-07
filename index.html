@@ -1,77 +1,110 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>¡Nos casamos!</title>
-  <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¡Nos casamos!</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-
-<!-- Language switch -->
-<div class="language-switch">
-    <a href="index.html">ES</a> | <a href="en.html">EN</a>
+  
+<!-- Right-side Ribbon -->
+<div class="ribbon-right">
+  <div class="ribbon-menu">
+    <!-- Navigation Links -->
+    <a href="#hero">Inicio</a>
+    <a href="#details">Info</a>
+    <a href="#rsvp">Confirmar</a>
+  </div>
+  <div class="ribbon-menu ribbon-language">
+    <!-- Language Links -->
+    <a href="index.html">ES</a>
+    <a href="en.html">EN</a>
+  </div>
 </div>
 
-  <!-- Hero Section -->
-  <section class="hero">
+<!-- Hero Section -->
+<section id="hero" class="hero">
+  <img src="images/photo1.jpg" alt="Lau y Juan" class="hero-img">
+  <div class="hero-text">
     <h1>Lau y Juan</h1>
-    <p>28 de Marzo, 2026 – Montevideo, Uruguay</p>
-  </section>
-
-  <!-- Wedding Info -->
-  <section class="info">
-    <h2>Detalles de la boda</h2>
-    <p>Lugar: La Baguala</p>
-    <p>Montevideo &#128149, Uruguay</p>
-    <p>Hora: 18:00</p>
-  </section>
-
-  <!-- Gallery -->
-  <section class="gallery">
-    <h2>Nosotros</h2>
-    <div class="photos">
-      <img src="images/photo1.jpg" alt="Juan and Laura">
-      <img src="images/photo2.jpg" alt="Engagement">
-      <img src="images/photo3.jpg" alt="Travel">
+    <p>28 de Marzo, 2026 - 18:00</p>
+    <div id="countdown">
+      <span id="days"></span> días 
+      <span id="hours"></span> horas 
+      <span id="minutes"></span> mins 
     </div>
-  </section>
+    <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Boda+Laura+y+Juan&dates=20260328T210000Z/20260329T060000Z&details=Lugar:+La+Baguala+Hotel+de+Campo+y+Chacras&location=Montevideo,+Uruguay" target="_blank" class="btn">Agregar a Google Calendar</a>
+  </div>
+</section>
 
-  <!-- Venue Map -->
-  <section class="map">
-    <h2>¿Cómo llegar?</h2>
-    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3274.3635738772546!2d-56.3868188!3d-34.8470908!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95a1d14bf271d16d%3A0x9335028719095d8!2sLa%20Baguala%20Hotel%20de%20Campo%20y%20Chacras!5e0!3m2!1ses-419!2sch!4v1757204973405!5m2!1ses-419!2sch" 
-            width="600"
-            height="450" 
-            style="border:0;" 
-            allowfullscreen="" 
-            loading="lazy" 
-            referrerpolicy="no-referrer-when-downgrade"></iframe>
-    </section>
+<!-- Wedding Details -->
+<section id="details" class="section highlight-box">
+  <h2>¿Dónde nos encontramos?</h2>
+  <p>Lugar: La Baguala</p>
+  <p>Montevideo, Uruguay &#128149</p>
+  <p>Hora: 18:00</p>
+  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3274.3635738772546!2d-56.3868188!3d-34.8470908!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95a1d14bf271d16d%3A0x9335028719095d8!2sLa%20Baguala%20Hotel%20de%20Campo%20y%20Chacras!5e0!3m2!1ses-419!2sch!4v1757204973405!5m2!1ses-419!2sch" 
+          width="600"
+          height="450" 
+          style="border:0;" 
+          allowfullscreen="" 
+          loading="lazy" 
+          referrerpolicy="no-referrer-when-downgrade"></iframe>
+  <img src="images/photo3.jpg" alt="Imagen intercalada" class="interspersed-photo">
+</section>
 
-<section class="rsvp">
-  <h2>Confirma tu asistencia</h2>
-  <form name="rsvp" method="POST" data-netlify="true">
-    <!-- Optional: bot field to prevent spam -->
+<!-- RSVP Form -->
+<section id="rsvp" class="section">
+  <h2>Confirmá tu asistencia</h2>
+  <form name="rsvp" method="POST" data-netlify="true" action="/gracias.html" data-netlify-honeypot="bot-field">
     <input type="hidden" name="form-name" value="rsvp">
-
+    <p style="display:none">
+      No llenar: <input name="bot-field">
+    </p>
     <input type="text" name="name" placeholder="Nombre" required>
-    <input type="email" name="email" placeholder="Correo electrónico" required>
+    <input type="email" name="email" placeholder="E-mail" required>
     <select name="attendance" required>
       <option value="">¿Nos acompañás?</option>
       <option value="yes">Sí</option>
       <option value="no">No</option>
     </select>
-    <textarea name="message" placeholder="Mensaje / Comentarios"></textarea>
-
+    <input type="text" name="song" placeholder="¿Qué canción no te puede faltar?">
+    <input type="text" name="diet" placeholder="Restricciones alimenticias">
+    <textarea name="message" placeholder="Dejanos un mensaje"></textarea>
     <button type="submit">Enviar</button>
   </form>
 </section>
+  
+<!-- Instagram Hashtag -->
+<section class="section">
+  <h2>Comparte tus fotos</h2>
+  <a href="https://www.instagram.com/explore/tags/lauyjuansecasan/" target="_blank" class="btn">#lauyjuansecasan</a>
+</section>
 
-  <!-- Footer -->
-  <footer>
-    <p>Los queremos, Lau y Juan 💕</p>
-  </footer>
+
+<!-- Countdown JS -->
+<script>
+const weddingDate = new Date("March 28, 2026 18:00:00").getTime();
+const countdown = setInterval(() => {
+    const now = new Date().getTime();
+    const distance = weddingDate - now;
+    if(distance < 0) return clearInterval(countdown);
+    document.getElementById("days").innerText = Math.floor(distance/(1000*60*60*24));
+    document.getElementById("hours").innerText = Math.floor((distance%(1000*60*60*24))/(1000*60*60));
+    document.getElementById("minutes").innerText = Math.floor((distance%(1000*60*60))/(1000*60));
+}, 1000);
+
+// Smooth scroll for navigation ribbon only
+document.querySelectorAll('.ribbon-nav a').forEach(anchor => {
+  anchor.addEventListener('click', function(e){
+    e.preventDefault();
+    document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+  });
+});
+</script>
 
 </body>
 </html>
+
