@@ -49,15 +49,24 @@
             referrerpolicy="no-referrer-when-downgrade"></iframe>
     </section>
 
-  <!-- RSVP Form -->
-  <section class="rsvp">
-    <h2>¿Nos acompañás?</h2>
-    <!-- Embed Google Form -->
-    <iframe src="https://docs.google.com/forms/d/e/.../viewform?embedded=true"
-            width="640" height="800" frameborder="0" marginheight="0" marginwidth="0">
-      Loading…
-    </iframe>
-  </section>
+<section class="rsvp">
+  <h2>Confirma tu asistencia</h2>
+  <form name="rsvp" method="POST" data-netlify="true">
+    <!-- Optional: bot field to prevent spam -->
+    <input type="hidden" name="form-name" value="rsvp">
+
+    <input type="text" name="name" placeholder="Nombre" required>
+    <input type="email" name="email" placeholder="Correo electrónico" required>
+    <select name="attendance" required>
+      <option value="">¿Nos acompañás?</option>
+      <option value="yes">Sí</option>
+      <option value="no">No</option>
+    </select>
+    <textarea name="message" placeholder="Mensaje / Comentarios"></textarea>
+
+    <button type="submit">Enviar</button>
+  </form>
+</section>
 
   <!-- Footer -->
   <footer>
