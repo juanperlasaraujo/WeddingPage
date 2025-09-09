@@ -13,9 +13,10 @@
 <div class="ribbon-right">
   <div class="ribbon-menu">
     <!-- Navigation Links -->
-    <a href="#hero">Inicio</a>
+    <a href="#home">Inicio</a>
     <a href="#details">Info</a>
     <a href="#rsvp">Confirmar</a>
+    <a href="#gift">Regalos</a>
   </div>
   <div class="ribbon-menu ribbon-language">
     <!-- Language Links -->
@@ -25,10 +26,10 @@
 </div>
 
 <!-- Hero Section -->
-<section id="hero" class="hero">
-  <img src="images/photo1.jpg" alt="Lau y Juan" class="hero-img">
+<section id="home" class="hero">
+  <div class="hero-img"></div>
   <div class="hero-text">
-    <h1>Lau y Juan</h1>
+    <h1>Juan y Laura</h1>
     <p>28 de Marzo, 2026 - 18:00</p>
     <div id="countdown">
       <span id="days"></span> días 
@@ -42,18 +43,31 @@
 <!-- Wedding Details -->
 <section id="details" class="section highlight-box">
   <h2>¿Dónde nos encontramos?</h2>
-  <p>Lugar: La Baguala</p>
-  <p>Montevideo, Uruguay &#128149</p>
-  <p>Hora: 18:00</p>
-  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3274.3635738772546!2d-56.3868188!3d-34.8470908!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95a1d14bf271d16d%3A0x9335028719095d8!2sLa%20Baguala%20Hotel%20de%20Campo%20y%20Chacras!5e0!3m2!1ses-419!2sch!4v1757204973405!5m2!1ses-419!2sch" 
-          width="600"
-          height="450" 
-          style="border:0;" 
-          allowfullscreen="" 
-          loading="lazy" 
-          referrerpolicy="no-referrer-when-downgrade"></iframe>
-  <img src="images/photo3.jpg" alt="Imagen intercalada" class="interspersed-photo">
+  <div class="details-blob">
+    <p>La Baguala</p>
+    <p>Montevideo, Uruguay &#128149</p>
+    <p>Hora: 18:00</p>
+    <p>Vestimenta: Semi-formal</p>
+  </div>
+  <div class="map-embed">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3274.3635738772546!2d-56.3868188!3d-34.8470908!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95a1d14bf271d16d%3A0x9335028719095d8!2sLa%20Baguala%20Hotel%20de%20Campo%20y%20Chacras!5e0!3m2!1ses-419!2sch!4v1757204973405!5m2!1ses-419!2sch" 
+            width="600"
+            height="450" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </div>
+  <div>
+    <svg class="uruguay-motif" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="120" height="120">
+      <!-- Simple ceibo flower example -->
+      <circle cx="100" cy="100" r="50" fill="#f4e1a4" />
+      <circle cx="100" cy="100" r="30" fill="#00688b" />
+      <circle cx="100" cy="100" r="15" fill="#f4e1a4" />
+    </svg>
+  </div>
 </section>
+<img src="images/photo5.jpg" alt="Lau y Juan" class="interspersed-photo">
 
 <!-- RSVP Form -->
 <section id="rsvp" class="section">
@@ -71,17 +85,63 @@
       <option value="no">No</option>
     </select>
     <input type="text" name="song" placeholder="¿Qué canción no te puede faltar?">
-    <input type="text" name="diet" placeholder="Restricciones alimenticias">
+    <select name="diet" required>
+      <option value="">¿Tenés alguna restricción alimenticia?</option>
+      <option value="vegetarian">Vegetariano/a</option>
+      <option value="vegan">Vegano/a</option>
+      <option value="celiac">Intolerante al gluten</option>
+      <option value="sugar">Intolerante a la lactosa</option>
+      <option value="no">Ninguna</option>
+      <option value="other">Otra, especificar en mensaje</option>
+    </select>
     <textarea name="message" placeholder="Dejanos un mensaje"></textarea>
     <button type="submit">Enviar</button>
   </form>
+  <div>
+    <svg class="uruguay-motif" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="120" height="120">
+      <!-- Simple ceibo flower example -->
+      <circle cx="100" cy="100" r="50" fill="#f4e1a4" />
+      <circle cx="100" cy="100" r="30" fill="#00688b" />
+      <circle cx="100" cy="100" r="15" fill="#f4e1a4" />
+    </svg>
+  </div>
+</section>
+
+<img src="images/photo4.jpg" alt="Lau y Juan" class="interspersed-photo">
+
+<section id="gift" class="section"></section>
+  <h2>Sugerencia de regalo</h2>
+  <div class="gift-blob">
+    <p>Si además de contar con su presencia, desean tener un detalle con nosotros, les compartimos nuestras cuentas:</p>
+    <p><strong>IBAN Suiza: [INSERT HERE]</strong></p>
+    <p><strong>Twint: [INSERT HERE]</strong></p>
+    <p><strong>Santander Uruguay UYU: [INSERT HERE]</strong></p>
+    <p><strong>Santander Uruguay USD: [INSERT HERE]</strong></p>
+  </div>
+  <div>
+    <svg class="uruguay-motif" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="120" height="120">
+      <!-- Simple ceibo flower example -->
+      <circle cx="100" cy="100" r="50" fill="#f4e1a4" />
+      <circle cx="100" cy="100" r="30" fill="#00688b" />
+      <circle cx="100" cy="100" r="15" fill="#f4e1a4" />
+    </svg>
+  </div>
 </section>
   
 <!-- Instagram Hashtag -->
 <section class="section">
-  <h2>Comparte tus fotos</h2>
-  <a href="https://www.instagram.com/explore/tags/lauyjuansecasan/" target="_blank" class="btn">#lauyjuansecasan</a>
+  <h2>Compartí tus fotos</h2>
+  <a href="https://www.instagram.com/explore/tags/lauyjuansecasan/" target="_blank" class="btn insta-btn">#lauyjuansecasan</a>
+  <div>
+    <svg class="uruguay-motif" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="120" height="120">
+      <!-- Simple ceibo flower example -->
+      <circle cx="100" cy="100" r="50" fill="#f4e1a4" />
+      <circle cx="100" cy="100" r="30" fill="#00688b" />
+      <circle cx="100" cy="100" r="15" fill="#f4e1a4" />
+    </svg>
+  </div>
 </section>
+
 
 
 <!-- Countdown JS -->
