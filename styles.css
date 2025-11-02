@@ -1,4 +1,6 @@
 /* Reset and basics */
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+
 * {
   margin: 0;
   padding: 0;
@@ -16,7 +18,7 @@ body {
 }
 
 h1, h2 {
-  font-family: 'Great Vibes', cursive;
+  font-family: 'Great Vibes';
   color: #3a3a3a;
 }
 
@@ -27,6 +29,11 @@ h1 {
 h2 {
   font-size: clamp(1.6rem, 3vw, 2.2rem);
   margin-bottom: 1rem;
+}
+
+h3 {
+  margin-bottom: 1rem;
+  font-size: clamp(16px, 1.5vw, 20px);
 }
 
 p {
@@ -70,9 +77,8 @@ a {
 }
 
 #countdown {
-  font-weight: bold;
   margin: 1rem 0;
-  font-size: 1.2rem;
+  font-size: 0.8rem;
 }
 
 /* Buttons */
@@ -133,7 +139,7 @@ a {
   border-radius: 15px;
   padding: clamp(1rem, 2vw, 2rem); /* scales padding with screen width */
   max-width: 700px;                  /* prevents it from being too wide on large screens */
-  width: 38%;                         /* allows scaling on small to medium screens */
+  width: 40%;                         /* allows scaling on small to medium screens */
   margin: 0 auto 2rem auto;
   text-align: center;
   color: #00688b;
@@ -272,6 +278,63 @@ button:hover {
   background: #004f66;
 }
 
+/* Blob section (similar to your hero-text style) */
+.contact-blob {
+  display: flex;
+  justify-content: center;
+  align-items: center; /* ensures vertical alignment if needed */
+  padding: 3rem 1rem;
+}
+
+.blob-content {
+  background: rgba(200,200,200,0.85);
+  border-radius: 15px;
+  padding: clamp(1rem, 2vw, 2rem); /* scales padding with screen width */
+  max-width: 700px;                  /* prevents it from being too wide on large screens */
+  width: 50%;                         /* allows scaling on small to medium screens */
+  margin: 0 auto 2rem auto;
+  text-align: center;
+  color: #00688b;
+  max-width: 600px;
+}
+
+.btn-whatsapp {
+  display: inline-block;
+  margin-top: 1rem;
+  padding: .6rem 1.2rem;
+  background: #25D366;
+  color: white;
+  border-radius: 12px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.btn-whatsapp:hover {
+  opacity: 0.9;
+}
+
+/* Floating button (scroll-to-blob) */
+.whatsapp-float {
+  position: fixed;
+  right: 16px;
+  bottom: 18px;
+  background: #25D366;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+  z-index: 1200;
+  text-decoration: none;
+}
+.whatsapp-float:hover { transform: translateY(-3px); }
+
+/* Smooth scroll for the anchor */
+html {
+  scroll-behavior: smooth;
+}
+
 /* Responsive */
 @media (max-width:768px){
   .hero-text h1 { font-size:2rem; }
@@ -294,6 +357,9 @@ button:hover {
   }
 }
 @media (max-width: 550px) {
+  .h2 {
+    font-size: 2rem 
+  }
   .hero-img {
     min-height: 100vh;
     background-image: url("images/photo1-mobile.jpg");
@@ -306,15 +372,22 @@ button:hover {
   
   }
 
-  .hero-text h1 { font-size: 1.6rem; }
+  .hero-text h1 { font-size: 2rem; }
   .hero-text p { font-size: 0.9rem; }
   .hero-text #countdown { font-size: 0.9rem; }
   .details-blob {
   width: 70%;                         /* allows scaling on small to medium screens */
   }
+  .blob-content {
+    width: 70%;
+  }
   .gift-blob { width: 70%; }
 }
 @media (max-width: 424px) {
+  .h2 {
+    font-size: 2rem 
+  }
+
   .hero {
     min-height: calc(70vh + 200px); /* image height + space for blob */
     display: flex;
@@ -342,15 +415,19 @@ button:hover {
     z-index: 10;
   }
   .hero-text h1 {
+
     margin-bottom: 0.5rem;
-    font-size: clamp(1.5rem, 6vw, 2rem);
-  }
+    font-size: 2rem }
+
 
   .hero-text p, #countdown, .btn {
     font-size: clamp(0.9rem, 3vw, 1.2rem);
   }
   .details-blob {
   width: 90%;   
+  }
+  .blob-content {
+    width: 90%;
   }
   .gift-blob { width: 90%; }
 }
