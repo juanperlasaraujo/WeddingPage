@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#1A3A6E">
+  <title>Gym Tracker — Phase 1</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --col-a: #1A3A6E;
+      --col-b: #1A5C3A;
+      --col-c: #7B5800;
+      --col-d: #4A235A;
+      --bg: #F2F2F7;
+      --card: #FFFFFF;
+      --border: #D1D1D6;
+      --text: #1C1C1E;
+      --text2: #6C6C70;
+      --r: 12px;
+      --accent: #1A3A6E;
+    }
+
+    html { -webkit-text-size-adjust: 100%; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.45;
+      padding-bottom: 90px;
+      min-height: 100vh;
+    }
+
+    /* ── Header ───────────────────────────────── */
+    .header {
+      background: var(--accent);
+      color: #fff;
+      padding: 14px 16px 12px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 4px rgba(0,0,0,.2);
+    }
+    .header h1 { font-size: 19px; font-weight: 700; letter-spacing: -.3px; }
+    .header p  { font-size: 12px; opacity: .75; margin-top: 1px; }
+
+    /* ── Day tabs ─────────────────────────────── */
+    .day-tabs {
+      display: flex;
+      gap: 8px;
+      padding: 12px 16px;
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .day-tabs::-webkit-scrollbar { display: none; }
+
+    .tab {
+      flex-shrink: 0;
+      padding: 8px 18px;
+      border-radius: 20px;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      color: var(--text2);
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: background .12s, color .12s, border-color .12s;
+    }
+    .tab[data-day="A"].active { background: var(--col-a); color: #fff; border-color: var(--col-a); }
+    .tab[data-day="B"].active { background: var(--col-b); color: #fff; border-color: var(--col-b); }
+    .tab[data-day="C"].active { background: var(--col-c); color: #fff; border-color: var(--col-c); }
+    .tab[data-day="D"].active { background: var(--col-d); color: #fff; border-color: var(--col-d); }
+
+    /* ── Content ──────────────────────────────── */
+    .content { padding: 12px 14px; }
+
+    /* ── Cards ────────────────────────────────── */
+    .card {
+      background: var(--card);
+      border-radius: var(--r);
+      border: 1px solid var(--border);
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+    .card-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text2);
+      text-transform: uppercase;
+      letter-spacing: .6px;
+      margin-bottom: 12px;
+    }
+
+    /* ── Form elements ────────────────────────── */
+    label {
+      display: block;
+      font-size: 12px;
+      color: var(--text2);
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 16px;
+      font-family: inherit;
+      color: var(--text);
+      background: var(--card);
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236C6C70' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 11px center;
+      padding-right: 30px;
+    }
+    textarea {
+      height: 90px;
+      resize: vertical;
+    }
+    .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+    .row3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+    .frow { margin-bottom: 10px; }
+
+    /* ── Exercise cards ───────────────────────── */
+    .ex-card {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-left-width: 4px;
+    }
+    .day-A .ex-card { border-left-color: var(--col-a); }
+    .day-B .ex-card { border-left-color: var(--col-b); }
+    .day-C .ex-card { border-left-color: var(--col-c); }
+    .day-D .ex-card { border-left-color: var(--col-d); }
+
+    .ex-name { font-size: 15px; font-weight: 600; margin-bottom: 10px; }
+
+    .ex-row {
+      display: grid;
+      gap: 6px;
+      align-items: end;
+    }
+    .ex-row.cols4 { grid-template-columns: 1fr 1fr 1fr 1.1fr; }
+    .ex-row.cols3 { grid-template-columns: 1fr 1fr 1.1fr; }
+
+    .ex-row label { font-size: 11px; }
+    .ex-row input,
+    .ex-row select {
+      padding: 9px 6px;
+      font-size: 16px;
+      text-align: center;
+    }
+    .ex-row select { padding-right: 24px; background-position: right 6px center; }
+
+    .bw-pill {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #F2F2F7;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 13px;
+      color: var(--text2);
+      font-weight: 600;
+      min-height: 42px;
+    }
+
+    /* ── Output ───────────────────────────────── */
+    .output-pre {
+      background: #F2F2F7;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 13px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      line-height: 1.5;
+      margin-top: 10px;
+    }
+
+    /* ── Buttons ──────────────────────────────── */
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: center;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn + .btn { margin-top: 8px; }
+    .btn-green  { background: var(--col-b); color: #fff; }
+    .btn-grey   { background: #E5E5EA; color: var(--text); }
+    .btn-copied { background: #34C759 !important; }
+
+    .fab {
+      position: fixed;
+      bottom: 18px;
+      left: 14px;
+      right: 14px;
+      padding: 16px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      font-size: 17px;
+      font-weight: 700;
+      cursor: pointer;
+      z-index: 200;
+      box-shadow: 0 4px 16px rgba(0,0,0,.25);
+      -webkit-tap-highlight-color: transparent;
+      display: none;
+    }
+
+    /* ── Misc ─────────────────────────────────── */
+    .hidden { display: none !important; }
+    .placeholder {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--text2);
+    }
+    .placeholder h2 { font-size: 22px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+    .placeholder p  { font-size: 15px; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Gym Tracker</h1>
+  <p>Phase 1 — Foundation · Weeks 1–8</p>
+</div>
+
+<div class="day-tabs" id="day-tabs">
+  <button class="tab" data-day="A" onclick="selectDay('A')">Day A — Legs</button>
+  <button class="tab" data-day="B" onclick="selectDay('B')">Day B — Upper</button>
+  <button class="tab" data-day="C" onclick="selectDay('C')">Day C — Cardio</button>
+  <button class="tab" data-day="D" onclick="selectDay('D')">Day D — Optional</button>
+</div>
+
+<div class="content">
+
+  <div id="placeholder" class="placeholder">
+    <h2>Select a day</h2>
+    <p>Tap Day A, B, C, or D above to start logging your session.</p>
+  </div>
+
+  <div id="form-wrapper" class="hidden">
+
+    <!-- Session header -->
+    <div class="card">
+      <div class="card-title">Session</div>
+
+      <div class="frow">
+        <label>Date</label>
+        <input type="date" id="f-date">
+      </div>
+
+      <div class="row2">
+        <div><label>Duration (min)</label><input type="number" id="f-dur" placeholder="55" inputmode="numeric"></div>
+        <div><label>Avg HR (bpm)</label><input type="number" id="f-hr" placeholder="135" inputmode="numeric"></div>
+      </div>
+
+      <div class="row2">
+        <div>
+          <label>Overall feel</label>
+          <select id="f-feel">
+            <option value="">Select</option>
+            <option value="E — Easy">E — Easy</option>
+            <option value="R — Right">R — Right</option>
+            <option value="H — Hard">H — Hard</option>
+            <option value="TH — Too Hard">TH — Too Hard</option>
+          </select>
+        </div>
+        <div><label>Sleep last night (hrs)</label><input type="number" id="f-sleep" placeholder="7" step="0.5" inputmode="decimal"></div>
+      </div>
+
+      <div class="row3">
+        <div>
+          <label>Protein target</label>
+          <select id="f-protein">
+            <option value="">—</option>
+            <option value="Yes">Yes</option>
+            <option value="Partial">Partial</option>
+            <option value="No">No</option>
+          </select>
+        </div>
+        <div>
+          <label>Pre-session energy</label>
+          <select id="f-energy">
+            <option value="">—</option>
+            <option value="Low">Low</option>
+            <option value="Normal">Normal</option>
+            <option value="High">High</option>
+          </select>
+        </div>
+        <div>
+          <label>Warm-up</label>
+          <select id="f-warmup">
+            <option value="">—</option>
+            <option value="Full (20 min)">Full (20 min)</option>
+            <option value="Short (10 min)">Short (10 min)</option>
+            <option value="Skipped">Skipped</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exercises -->
+    <div class="card">
+      <div class="card-title">Exercises</div>
+      <div id="ex-container"></div>
+    </div>
+
+    <!-- Pain & Notes -->
+    <div class="card">
+      <div class="card-title">Notes</div>
+      <div class="frow">
+        <label>Pain / discomfort</label>
+        <input type="text" id="f-pain" placeholder="None">
+      </div>
+      <div class="frow">
+        <label>Notes</label>
+        <textarea id="f-notes" placeholder="Energy levels, what felt different, questions for Claude…"></textarea>
+      </div>
+    </div>
+
+    <!-- Output -->
+    <div id="output-card" class="card hidden">
+      <div class="card-title">Session log — paste into Claude</div>
+      <div id="output-pre" class="output-pre"></div>
+      <div style="margin-top:12px">
+        <button class="btn btn-green" id="copy-btn" onclick="copyLog()">Copy to clipboard</button>
+        <button class="btn btn-grey" onclick="newSession()">New session</button>
+      </div>
+    </div>
+
+  </div><!-- /form-wrapper -->
+</div><!-- /content -->
+
+<button class="fab" id="fab" onclick="generateLog()">Generate session log</button>
+
+<script>
+// ─── Programme data ────────────────────────────────────────────────────────────
+// type: 'normal' | 'bodyweight' | 'timed' | 'cardio'
+// repSuffix: optional '/side' for bilateral bodyweight/normal exercises
+const PROG = {
+  A: {
+    label: 'A — Legs',
+    exercises: [
+      { name: 'Goblet squat',           sets: 3, reps: 12, weight: 10,  unit: 'kg',      type: 'normal' },
+      { name: 'Leg press',              sets: 3, reps: 10, weight: 103, unit: 'kg',      type: 'normal' },
+      { name: 'Romanian deadlift (DB)', sets: 3, reps: 10, weight: 15,  unit: 'kg/side', type: 'normal' },
+      { name: 'Leg curl',               sets: 3, reps: 10, weight: 45,  unit: 'kg',      type: 'normal' },
+      { name: 'Leg extension',          sets: 3, reps: 10, weight: 50,  unit: 'kg',      type: 'normal' },
+      { name: 'Hip abductor machine',   sets: 3, reps: 12, weight: 90,  unit: 'kg',      type: 'normal' },
+      { name: 'Hip adductor machine',   sets: 3, reps: 12, weight: 63,  unit: 'kg',      type: 'normal' },
+      { name: 'Glute kickback machine', sets: 3, reps: 12, weight: 27,  unit: 'kg',      type: 'normal' },
+    ]
+  },
+  B: {
+    label: 'B — Upper',
+    exercises: [
+      { name: 'Bench press',              sets: 3, reps: 10, weight: 35, unit: 'kg total', type: 'normal' },
+      { name: 'Dumbbell overhead press',  sets: 3, reps: 10, weight: 9,  unit: 'kg/side',  type: 'normal' },
+      { name: 'Lat pulldown',             sets: 3, reps: 10, weight: 45, unit: 'kg',        type: 'normal' },
+      { name: 'Seated cable row',         sets: 3, reps: 10, weight: 45, unit: 'kg',        type: 'normal' },
+      { name: 'Dumbbell lateral raise',   sets: 3, reps: 12, weight: 6,  unit: 'kg/side',  type: 'normal' },
+      { name: 'Cable face pull',          sets: 3, reps: 15, weight: 14, unit: 'kg',        type: 'normal' },
+      { name: 'Bicep curl (machine)',     sets: 3, reps: 10, weight: 27, unit: 'kg',        type: 'normal' },
+      { name: 'Tricep pushdown',          sets: 3, reps: 10, weight: 36, unit: 'kg',        type: 'normal' },
+    ]
+  },
+  C: {
+    label: 'C — Cardio',
+    exercises: [
+      { name: 'Zone 2 run/cycle', sets: 1, reps: 45,  weight: null, unit: 'min',      type: 'cardio' },
+      { name: 'Dead bug',         sets: 3, reps: 10,  weight: null, unit: 'reps/side',type: 'bodyweight', repSuffix: '/side' },
+      { name: 'Pallof press',     sets: 3, reps: 10,  weight: 14,   unit: 'kg',       type: 'normal',     repSuffix: '/side' },
+      { name: 'Glute bridge',     sets: 3, reps: 15,  weight: null, unit: 'reps',     type: 'bodyweight' },
+      { name: 'Side plank',       sets: 3, reps: 30,  weight: null, unit: 'sec/side', type: 'timed' },
+    ]
+  },
+  D: {
+    label: 'D — Optional',
+    exercises: [
+      { name: 'Goblet squat (light)',       sets: 2, reps: 15, weight: 10, unit: 'kg',      type: 'normal' },
+      { name: 'Romanian deadlift (light)',  sets: 2, reps: 12, weight: 15, unit: 'kg/side', type: 'normal' },
+      { name: 'Dumbbell bench press',       sets: 2, reps: 12, weight: 35, unit: 'kg/side', type: 'normal' },
+      { name: 'Dumbbell row',               sets: 2, reps: 12, weight: 15, unit: 'kg/side', type: 'normal', repSuffix: '/side' },
+      { name: 'Dumbbell shoulder press',    sets: 2, reps: 12, weight: 9,  unit: 'kg/side', type: 'normal' },
+      { name: 'Zone 2 cardio finish',       sets: 1, reps: 20, weight: null, unit: 'min',   type: 'cardio' },
+    ]
+  }
+};
+
+// ─── State & storage ───────────────────────────────────────────────────────────
+let currentDay = null;
+
+function storedWeights() {
+  try { return JSON.parse(localStorage.getItem('gw') || '{}'); } catch { return {}; }
+}
+function persistWeight(name, val) {
+  const w = storedWeights();
+  w[name] = val;
+  localStorage.setItem('gw', JSON.stringify(w));
+}
+function defaultWeight(ex) {
+  const w = storedWeights();
+  return (w[ex.name] !== undefined) ? w[ex.name] : ex.weight;
+}
+
+// ─── Day selection ─────────────────────────────────────────────────────────────
+function selectDay(day) {
+  currentDay = day;
+
+  document.querySelectorAll('.tab').forEach(t => {
+    t.classList.toggle('active', t.dataset.day === day);
+  });
+
+  document.getElementById('placeholder').classList.add('hidden');
+  document.getElementById('form-wrapper').classList.remove('hidden');
+  document.getElementById('output-card').classList.add('hidden');
+  document.getElementById('fab').style.display = 'block';
+
+  // Set today
+  const now = new Date();
+  const iso = now.getFullYear() + '-'
+    + String(now.getMonth() + 1).padStart(2, '0') + '-'
+    + String(now.getDate()).padStart(2, '0');
+  document.getElementById('f-date').value = iso;
+
+  renderExercises(day);
+}
+
+// ─── Exercise rendering ────────────────────────────────────────────────────────
+function renderExercises(day) {
+  const container = document.getElementById('ex-container');
+  container.className = 'day-' + day;
+  container.innerHTML = '';
+  PROG[day].exercises.forEach((ex, i) => container.appendChild(makeExCard(ex, i)));
+}
+
+function makeExCard(ex, i) {
+  const card = document.createElement('div');
+  card.className = 'ex-card';
+
+  const title = document.createElement('div');
+  title.className = 'ex-name';
+  title.textContent = ex.name;
+  card.appendChild(title);
+
+  const row = document.createElement('div');
+
+  if (ex.type === 'cardio') {
+    row.className = 'ex-row cols3';
+    row.innerHTML = col('Duration (min)', `<input type="number" id="ex${i}d" value="${ex.reps}" inputmode="numeric">`)
+      + col('Avg HR (bpm)', `<input type="number" id="ex${i}hr" placeholder="135" inputmode="numeric">`)
+      + col('Feel', feelSel(`ex${i}f`));
+
+  } else if (ex.type === 'bodyweight') {
+    row.className = 'ex-row cols4';
+    const repLbl = ex.repSuffix ? `Reps${ex.repSuffix}` : 'Reps';
+    row.innerHTML = col('Sets', `<input type="number" id="ex${i}s" value="${ex.sets}" inputmode="numeric">`)
+      + col(repLbl, `<input type="number" id="ex${i}r" value="${ex.reps}" inputmode="numeric">`)
+      + col('Weight', `<div class="bw-pill">BW</div>`)
+      + col('Feel', feelSel(`ex${i}f`));
+
+  } else if (ex.type === 'timed') {
+    row.className = 'ex-row cols4';
+    row.innerHTML = col('Sets', `<input type="number" id="ex${i}s" value="${ex.sets}" inputmode="numeric">`)
+      + col('Sec/side', `<input type="number" id="ex${i}r" value="${ex.reps}" inputmode="numeric">`)
+      + col('Weight', `<div class="bw-pill">BW</div>`)
+      + col('Feel', feelSel(`ex${i}f`));
+
+  } else {
+    // normal
+    row.className = 'ex-row cols4';
+    const w = defaultWeight(ex);
+    const repLbl = ex.repSuffix ? `Reps${ex.repSuffix}` : 'Reps';
+    row.innerHTML = col('Sets', `<input type="number" id="ex${i}s" value="${ex.sets}" inputmode="numeric">`)
+      + col(repLbl, `<input type="number" id="ex${i}r" value="${ex.reps}" inputmode="numeric">`)
+      + col(ex.unit, `<input type="number" id="ex${i}w" value="${w !== null ? w : ''}" step="0.5" inputmode="decimal">`)
+      + col('Feel', feelSel(`ex${i}f`));
+  }
+
+  card.appendChild(row);
+  return card;
+}
+
+function col(label, inputHtml) {
+  return `<div><label>${label}</label>${inputHtml}</div>`;
+}
+function feelSel(id) {
+  return `<select id="${id}"><option value="">—</option><option value="E">E</option><option value="R">R</option><option value="H">H</option><option value="TH">TH</option></select>`;
+}
+
+// ─── Log generation ────────────────────────────────────────────────────────────
+function generateLog() {
+  if (!currentDay) return;
+  const prog = PROG[currentDay];
+
+  const date     = val('f-date') || '—';
+  const dur      = val('f-dur') || '—';
+  const hr       = val('f-hr') || '—';
+  const feel     = val('f-feel') || '—';
+  const sleep    = val('f-sleep') || '—';
+  const protein  = val('f-protein') || '—';
+  const energy   = val('f-energy');
+  const warmup   = val('f-warmup');
+  const pain     = val('f-pain') || 'None';
+  const notes    = val('f-notes') || '—';
+
+  const exLines = prog.exercises.map((ex, i) => {
+    const feel_ex = gv(`ex${i}f`) || '—';
+
+    if (ex.type === 'cardio') {
+      const d = gv(`ex${i}d`) || '—';
+      const h = gv(`ex${i}hr`);
+      return `${ex.name} — ${d} min${h ? ' · HR ' + h + ' bpm' : ''} — ${feel_ex}`;
+    }
+
+    const sets = gv(`ex${i}s`) || ex.sets;
+    const reps = gv(`ex${i}r`) || ex.reps;
+    const suffix = ex.repSuffix || '';
+
+    if (ex.type === 'bodyweight') {
+      return `${ex.name} — ${sets}×${reps}${suffix} — BW — ${feel_ex}`;
+    }
+    if (ex.type === 'timed') {
+      return `${ex.name} — ${sets}×${reps}s/side — BW — ${feel_ex}`;
+    }
+
+    // normal
+    const wInput = document.getElementById(`ex${i}w`);
+    const w = wInput ? wInput.value.trim() : '';
+    if (w) persistWeight(ex.name, parseFloat(w));
+    const wStr = w ? `${w} ${ex.unit}` : '—';
+    return `${ex.name} — ${sets}×${reps}${suffix} — ${wStr} — ${feel_ex}`;
+  });
+
+  const extras = [];
+  if (energy) extras.push(`Pre-session energy: ${energy}`);
+  if (warmup) extras.push(`Warm-up: ${warmup}`);
+
+  const log = [
+    'SESSION LOG',
+    '──────────────────────────────',
+    `Date: ${date}`,
+    `Day type: ${prog.label}`,
+    `Duration: ${dur} min`,
+    `Avg HR: ${hr} bpm`,
+    `Overall feel: ${feel}`,
+    `Sleep last night: ${sleep} hrs`,
+    `Protein target: ${protein}`,
+    ...extras,
+    '',
+    'Exercises:',
+    ...exLines,
+    '',
+    `Pain / discomfort: ${pain}`,
+    `Notes: ${notes}`,
+    '──────────────────────────────',
+  ].join('\n');
+
+  document.getElementById('output-pre').textContent = log;
+  document.getElementById('output-card').classList.remove('hidden');
+  document.getElementById('copy-btn').textContent = 'Copy to clipboard';
+  document.getElementById('copy-btn').classList.remove('btn-copied');
+
+  setTimeout(() => document.getElementById('output-card').scrollIntoView({ behavior: 'smooth', block: 'start' }), 60);
+}
+
+function copyLog() {
+  const text = document.getElementById('output-pre').textContent;
+  const btn = document.getElementById('copy-btn');
+
+  const done = () => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('btn-copied');
+    setTimeout(() => {
+      btn.textContent = 'Copy to clipboard';
+      btn.classList.remove('btn-copied');
+    }, 2500);
+  };
+
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
+  } else {
+    fallbackCopy(text, done);
+  }
+}
+
+function fallbackCopy(text, cb) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  Object.assign(ta.style, { position: 'fixed', left: '-9999px', top: '-9999px' });
+  document.body.appendChild(ta);
+  ta.focus();
+  ta.select();
+  try { document.execCommand('copy'); cb(); } catch {}
+  document.body.removeChild(ta);
+}
+
+function newSession() {
+  document.getElementById('output-card').classList.add('hidden');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function val(id) { const e = document.getElementById(id); return e ? e.value.trim() : ''; }
+function gv(id)  { const e = document.getElementById(id); return e ? e.value.trim() : ''; }
+</script>
+</body>
+</html>
