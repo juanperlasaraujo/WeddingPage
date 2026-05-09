@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>¡Nos casamos!</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  
+<!-- Right-side Ribbon -->
+<div class="ribbon-right">
+  <div class="ribbon-menu">
+    <!-- Navigation Links -->
+    <a href="#home">Inicio</a>
+    <a href="#details">Info</a>
+    <a href="#rsvp">Confirmar</a>
+    <a href="#gift">Regalos</a>
+  </div>
+  <div class="ribbon-menu ribbon-language">
+    <!-- Language Links -->
+    <a href="index.html">ES</a>
+    <a href="en.html">EN</a>
+  </div>
+</div>
+
+<!-- Hero Section -->
+<section id="home" class="hero">
+  <div class="hero-img"></div>
+  <div class="hero-text">
+    <h1>Juan y Laura</h1>
+    <h3>28 de Marzo, 2026 - 17:00</h3>
+    <div id="countdown">
+      <span id="days"></span> días 
+      <span id="hours"></span> horas 
+      <span id="minutes"></span> mins 
+    </div>
+    <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Boda+Laura+y+Juan&dates=20260328T200000Z/20260329T050000Z&details=Lugar:+La+Baguala+Hotel+de+Campo+y+Chacras%0A%0AUbicación:+https://maps.app.goo.gl/dRNbDmXWGuF1tWRo6&location=La+Baguala+Hotel+de+Campo+y+Chacras,+Montevideo,+Uruguay" target="_blank" class="btn">Agregar a Google Calendar</a>
+  </div>
+</section>
+
+<!-- Wedding Details -->
+<section id="details" class="section highlight-box">
+  <h2>¿Dónde nos encontramos?</h2>
+  <div class="details-blob">
+    <h3>La Baguala</h3>
+    <h3>Montevideo, Uruguay &#128149</h3>
+    <p>Vestimenta: Semi-formal</p>
+  </div>
+  <div class="map-embed">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3274.3635738772546!2d-56.3868188!3d-34.8470908!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95a1d14bf271d16d%3A0x9335028719095d8!2sLa%20Baguala%20Hotel%20de%20Campo%20y%20Chacras!5e0!3m2!1ses-419!2sch!4v1757204973405!5m2!1ses-419!2sch" 
+            width="600"
+            height="450" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </div>
+  <div>
+    <svg class="uruguay-motif" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="120" height="120">
+      <!-- Simple ceibo flower example -->
+      <circle cx="100" cy="100" r="50" fill="#f4e1a4" />
+      <circle cx="100" cy="100" r="30" fill="#00688b" />
+      <circle cx="100" cy="100" r="15" fill="#f4e1a4" />
+    </svg>
+  </div>
+</section>
+<img src="images/photo5.jpg" alt="Lau y Juan" class="interspersed-photo">
+
+<!-- RSVP Form -->
+<section id="rsvp" class="section">
+  <h2>Confirmá tu asistencia</h2>
+  <p>Un formulario por persona</p>
+  <form name="rsvp" method="POST" data-netlify="true" action="/gracias.html" data-netlify-honeypot="bot-field">
+    <input type="hidden" name="form-name" value="rsvp">
+    <p style="display:none">
+      No llenar: <input name="bot-field">
+    </p>
+    <input type="text" name="name" placeholder="Nombre" required>
+    <input type="email" name="email" placeholder="E-mail" required>
+    <select name="attendance" required>
+      <option value="">¿Nos acompañás?</option>
+      <option value="yes">Sí</option>
+      <option value="no">No</option>
+    </select>
+    <input type="text" name="song" placeholder="¿Qué canción no te puede faltar?">
+    <select name="diet" required>
+      <option value="">¿Tenés alguna restricción alimenticia?</option>
+      <option value="vegetarian">Vegetariano/a</option>
+      <option value="vegan">Vegano/a</option>
+      <option value="celiac">Intolerante al gluten</option>
+      <option value="sugar">Intolerante a la lactosa</option>
+      <option value="no">Ninguna</option>
+      <option value="other">Otra, especificar en mensaje</option>
+    </select>
+    <textarea name="message" placeholder="Dejanos un mensaje"></textarea>
+    <button type="submit">Enviar</button>
+  </form>
+  <div>
+    <svg class="uruguay-motif" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="120" height="120">
+      <!-- Simple ceibo flower example -->
+      <circle cx="100" cy="100" r="50" fill="#f4e1a4" />
+      <circle cx="100" cy="100" r="30" fill="#00688b" />
+      <circle cx="100" cy="100" r="15" fill="#f4e1a4" />
+    </svg>
+  </div>
+</section>
+<section id="planner-contact">
+    <h2>¿Dudas o consultas?</h2>
+  <div class="blob-content">
+    <p>Si tienes alguna pregunta, puedes contactar a nuestra wedding planner, <strong>Lily</strong></p>
+    <a href="https://wa.me/+59892308938?text=Hola%2C%20tengo%20una%20consulta%20sobre%20la%20boda"
+       class="btn-whatsapp" target="_blank" rel="noopener noreferrer">
+       Contactar por WhatsApp
+    </a>
+  </div>
+  <div>
+    <svg class="uruguay-motif" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="120" height="120">
+      <!-- Simple ceibo flower example -->
+      <circle cx="100" cy="100" r="50" fill="#f4e1a4" />
+      <circle cx="100" cy="100" r="30" fill="#00688b" />
+      <circle cx="100" cy="100" r="15" fill="#f4e1a4" />
+    </svg>
+  </div>
+</section>
+
+<img src="images/photo4.jpg" alt="Lau y Juan" class="interspersed-photo">
+
+<section id="gift" class="section"></section>
+  <h2>Sugerencia de regalo</h2>
+  <div class="gift-blob">
+    <p>Si además de contar con tu presencia, querés tener un detalle con nosotros, te compartimos nuestras cuentas:</p>
+    <p>IBAN Suiza: <strong>CH96 0024 3243 5866 5840 B</strong></p>
+    <p>Santander Uruguay UYU: <strong>0070 0000 0098 9800</strong></p>
+    <p>Santander Uruguay USD: <strong>0070 0051 0095 3279</strong></p>
+  </div>
+  <div>
+    <svg class="uruguay-motif" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="120" height="120">
+      <!-- Simple ceibo flower example -->
+      <circle cx="100" cy="100" r="50" fill="#f4e1a4" />
+      <circle cx="100" cy="100" r="30" fill="#00688b" />
+      <circle cx="100" cy="100" r="15" fill="#f4e1a4" />
+    </svg>
+  </div>
+</section>
+  
+<!-- Instagram Hashtag -->
+<section class="section">
+  <h2>Compartí tus fotos</h2>
+  <a href="https://www.instagram.com/explore/tags/lauyjuansecasan/" target="_blank" class="btn insta-btn">#lauyjuansecasan</a>
+  <div>
+    <svg class="uruguay-motif" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="120" height="120">
+      <!-- Simple ceibo flower example -->
+      <circle cx="100" cy="100" r="50" fill="#f4e1a4" />
+      <circle cx="100" cy="100" r="30" fill="#00688b" />
+      <circle cx="100" cy="100" r="15" fill="#f4e1a4" />
+    </svg>
+  </div>
+</section>
+
+
+
+<!-- Countdown JS -->
+<script>
+const weddingDate = new Date("March 28, 2026 17:00:00").getTime();
+const countdown = setInterval(() => {
+    const now = new Date().getTime();
+    const distance = weddingDate - now;
+    if(distance < 0) return clearInterval(countdown);
+    document.getElementById("days").innerText = Math.floor(distance/(1000*60*60*24));
+    document.getElementById("hours").innerText = Math.floor((distance%(1000*60*60*24))/(1000*60*60));
+    document.getElementById("minutes").innerText = Math.floor((distance%(1000*60*60))/(1000*60));
+}, 1000);
+
+// Smooth scroll for navigation ribbon only
+document.querySelectorAll('.ribbon-nav a').forEach(anchor => {
+  anchor.addEventListener('click', function(e){
+    e.preventDefault();
+    document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+  });
+});
+</script>
+
+<!-- Floating scroll button (place before </body>) -->
+<a href="#planner-contact" class="whatsapp-float" aria-label="Ir a contacto con la wedding planner">
+  <!-- same inline SVG icon as before -->
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+    <path fill="#ffffff" d="M20.52 3.48A11.86 11.86 0 0 0 12 0C5.37 0 .02 5.35.02 12c0 2.12.55 4.19 1.6 6.03L0 24l6.2-1.58A11.9 11.9 0 0 0 12 24c6.63 0 12-5.35 12-12 0-1.96-.5-3.8-1.48-5.52zM12 21.7c-1.9 0-3.72-.5-5.3-1.44l-.38-.22-3.68.94.98-3.6-.25-.37A9.34 9.34 0 0 1 2.7 12c0-5.04 4.1-9.15 9.3-9.15 2.48 0 4.81.97 6.56 2.73a9.1 9.1 0 0 1 2.74 6.42c0 5.04-4.07 9.15-9.3 9.15z"/>
+    <path fill="#ffffff" d="M17.3 14.6c-.3-.15-1.78-.88-2.05-.98-.27-.1-.47-.15-.67.15-.2.3-.78.98-.95 1.18-.17.2-.34.22-.63.07-.3-.15-1.27-.47-2.41-1.48-.89-.79-1.48-1.76-1.65-2.05-.17-.3-.02-.46.12-.61.12-.12.27-.3.4-.45.13-.15.17-.26.27-.43.1-.17.04-.32-.02-.46-.06-.13-.67-1.62-.92-2.21-.24-.58-.48-.5-.66-.51l-.56-.01c-.18 0-.46.07-.7.33-.24.26-.92.9-.92 2.2s.94 2.56 1.07 2.74c.13.17 1.83 2.82 4.4 3.85 2.57 1.03 2.57.69 3.04.64.46-.05 1.49-.6 1.7-1.18.2-.58.2-1.07.14-1.18-.06-.12-.24-.2-.54-.35z"/>
+  </svg>
+</a>
+</body>
+</html>
+
