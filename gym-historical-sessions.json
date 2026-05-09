@@ -1,0 +1,215 @@
+{
+  "exportedAt": "2026-05-09T00:00:00.000Z",
+  "version": 2,
+  "prog": {
+    "version": 2,
+    "days": [
+      {
+        "id": "day-legs",
+        "name": "Legs",
+        "exercises": [
+          { "id": "ex-a1", "name": "Goblet squat",           "type": "weighted",      "sets": 3, "reps": 12, "weight": 10,  "updatedAt": 0 },
+          { "id": "ex-a2", "name": "Leg press",               "type": "weighted",      "sets": 3, "reps": 10, "weight": 103, "updatedAt": 0 },
+          { "id": "ex-a3", "name": "Romanian deadlift (DB)",   "type": "weighted_side", "sets": 3, "reps": 10, "weight": 15,  "updatedAt": 0 },
+          { "id": "ex-a4", "name": "Leg curl",                 "type": "weighted",      "sets": 3, "reps": 10, "weight": 45,  "updatedAt": 0 },
+          { "id": "ex-a5", "name": "Leg extension",            "type": "weighted",      "sets": 3, "reps": 10, "weight": 50,  "updatedAt": 0 },
+          { "id": "ex-a6", "name": "Hip abductor machine",     "type": "weighted",      "sets": 3, "reps": 12, "weight": 90,  "updatedAt": 0 },
+          { "id": "ex-a7", "name": "Hip adductor machine",     "type": "weighted",      "sets": 3, "reps": 12, "weight": 63,  "updatedAt": 0 },
+          { "id": "ex-a8", "name": "Glute kickback machine",   "type": "weighted",      "sets": 3, "reps": 12, "weight": 27,  "updatedAt": 0 }
+        ]
+      },
+      {
+        "id": "day-upper",
+        "name": "Upper",
+        "exercises": [
+          { "id": "ex-b1", "name": "Bench press",              "type": "weighted",      "sets": 3, "reps": 10, "weight": 35, "updatedAt": 0 },
+          { "id": "ex-b2", "name": "Dumbbell overhead press",  "type": "weighted_side", "sets": 3, "reps": 10, "weight": 9,  "updatedAt": 0 },
+          { "id": "ex-b3", "name": "Lat pulldown",             "type": "weighted",      "sets": 3, "reps": 10, "weight": 45, "updatedAt": 0 },
+          { "id": "ex-b4", "name": "Seated cable row",         "type": "weighted",      "sets": 3, "reps": 10, "weight": 45, "updatedAt": 0 },
+          { "id": "ex-b5", "name": "Dumbbell lateral raise",   "type": "weighted_side", "sets": 3, "reps": 12, "weight": 6,  "updatedAt": 0 },
+          { "id": "ex-b6", "name": "Cable face pull",          "type": "weighted",      "sets": 3, "reps": 15, "weight": 14, "updatedAt": 0 },
+          { "id": "ex-b7", "name": "Bicep curl (machine)",     "type": "weighted",      "sets": 3, "reps": 10, "weight": 27, "updatedAt": 0 },
+          { "id": "ex-b8", "name": "Tricep pushdown",          "type": "weighted",      "sets": 3, "reps": 10, "weight": 36, "updatedAt": 0 }
+        ]
+      },
+      {
+        "id": "day-cardio",
+        "name": "Cardio",
+        "exercises": [
+          { "id": "ex-c1", "name": "Zone 2 run/cycle", "type": "cardio",     "duration": 45, "distance": null, "updatedAt": 0 },
+          { "id": "ex-c2", "name": "Dead bug",         "type": "bodyweight", "sets": 3, "reps": 10, "repSuffix": "/side", "updatedAt": 0 },
+          { "id": "ex-c3", "name": "Pallof press",     "type": "weighted",   "sets": 3, "reps": 10, "weight": 14, "repSuffix": "/side", "updatedAt": 0 },
+          { "id": "ex-c4", "name": "Glute bridge",     "type": "bodyweight", "sets": 3, "reps": 15, "updatedAt": 0 },
+          { "id": "ex-c5", "name": "Side plank",       "type": "timed",      "sets": 3, "reps": 30, "updatedAt": 0 }
+        ]
+      },
+      {
+        "id": "day-optional",
+        "name": "Optional",
+        "exercises": [
+          { "id": "ex-d1", "name": "Goblet squat (light)",      "type": "weighted",      "sets": 2, "reps": 15, "weight": 10, "updatedAt": 0 },
+          { "id": "ex-d2", "name": "Romanian deadlift (light)", "type": "weighted_side", "sets": 2, "reps": 12, "weight": 15, "updatedAt": 0 },
+          { "id": "ex-d3", "name": "Dumbbell bench press",      "type": "weighted_side", "sets": 2, "reps": 12, "weight": 35, "updatedAt": 0 },
+          { "id": "ex-d4", "name": "Dumbbell row",              "type": "weighted_side", "sets": 2, "reps": 12, "weight": 15, "repSuffix": "/side", "updatedAt": 0 },
+          { "id": "ex-d5", "name": "Dumbbell shoulder press",   "type": "weighted_side", "sets": 2, "reps": 12, "weight": 9,  "updatedAt": 0 },
+          { "id": "ex-d6", "name": "Zone 2 cardio finish",      "type": "cardio",        "duration": 20, "distance": null, "updatedAt": 0 }
+        ]
+      }
+    ]
+  },
+  "sessions": [
+    {
+      "id": "s-20260427-a",
+      "date": "2026-04-27",
+      "dayIdx": 0,
+      "dayLetter": "A",
+      "dayName": "Legs",
+      "duration": 60,
+      "avgHR": 135,
+      "overallFeel": "R — Right",
+      "sleep": 6,
+      "protein": "Partial",
+      "energy": null,
+      "warmup": null,
+      "exercises": [
+        { "id": "ex-a2", "name": "Leg press",           "type": "weighted", "sets": 3, "reps": 10, "weight": 103, "unit": "kg", "feel": "R" },
+        { "id": "ex-a4", "name": "Leg curl",             "type": "weighted", "sets": 3, "reps": 10, "weight": 50,  "unit": "kg", "feel": "H" },
+        { "id": "ex-a5", "name": "Leg extension",        "type": "weighted", "sets": 3, "reps": 10, "weight": 57,  "unit": "kg", "feel": "H" },
+        { "id": "ex-a6", "name": "Hip abductor machine", "type": "weighted", "sets": 3, "reps": 10, "weight": 90,  "unit": "kg", "feel": "R" },
+        { "id": "ex-a7", "name": "Hip adductor machine", "type": "weighted", "sets": 3, "reps": 10, "weight": 63,  "unit": "kg", "feel": "R" }
+      ],
+      "pain": "None",
+      "notes": "I did this session before you created the routine so some of the legs day exercises were missing. This log is from 2 days ago.",
+      "generatedLog": "",
+      "savedAt": 1745712000000
+    },
+    {
+      "id": "s-20260429-b",
+      "date": "2026-04-29",
+      "dayIdx": 1,
+      "dayLetter": "B",
+      "dayName": "Upper",
+      "duration": 75,
+      "avgHR": 135,
+      "overallFeel": "H — Hard",
+      "sleep": 7,
+      "protein": "Partial",
+      "energy": null,
+      "warmup": null,
+      "exercises": [
+        { "id": "ex-b1", "name": "Bench press",             "type": "weighted",      "sets": 3, "reps": 10, "weight": 30, "unit": "kg total", "feel": "R" },
+        { "id": "ex-b2", "name": "Dumbbell overhead press", "type": "weighted_side", "sets": 3, "reps": 10, "weight": 8,  "unit": "kg/side",  "feel": "H" },
+        { "id": "ex-b3", "name": "Lat pulldown",            "type": "weighted",      "sets": 3, "reps": 10, "weight": 52, "unit": "kg",       "feel": "H" },
+        { "id": "ex-b4", "name": "Seated cable row",        "type": "weighted",      "sets": 3, "reps": 10, "weight": 52, "unit": "kg",       "feel": "H" },
+        { "id": "ex-b5", "name": "Dumbbell lateral raise",  "type": "weighted_side", "sets": 3, "reps": 10, "weight": 6,  "unit": "kg/side",  "feel": "H" },
+        { "id": "ex-b6", "name": "Cable face pull",         "type": "weighted",      "sets": 3, "reps": 10, "weight": 14, "unit": "kg",       "feel": "H" },
+        { "id": "ex-b7", "name": "Bicep curl (machine)",    "type": "weighted",      "sets": 3, "reps": 10, "weight": 27, "unit": "kg",       "feel": "R" },
+        { "id": "ex-b8", "name": "Tricep pushdown",         "type": "weighted",      "sets": 3, "reps": 10, "weight": 36, "unit": "kg",       "feel": "E" }
+      ],
+      "pain": "None",
+      "notes": "Lots of muscles feeling the soreness of 2 months away but no pain or major discomfort",
+      "generatedLog": "",
+      "savedAt": 1745884800000
+    },
+    {
+      "id": "s-20260503-c",
+      "date": "2026-05-03",
+      "dayIdx": 2,
+      "dayLetter": "C",
+      "dayName": "Cardio",
+      "duration": 90,
+      "avgHR": 140,
+      "overallFeel": "R — Right",
+      "sleep": 7,
+      "protein": "Yes",
+      "energy": null,
+      "warmup": null,
+      "exercises": [
+        { "id": "ex-c1", "name": "Zone 2 run/cycle", "type": "cardio",     "duration": 45, "distance": null, "hr": 140, "feel": "R" },
+        { "id": "ex-c2", "name": "Dead bug",         "type": "bodyweight", "sets": 3, "reps": 10, "feel": "R" },
+        { "id": "ex-c3", "name": "Pallof press",     "type": "weighted",   "sets": 3, "reps": 10, "weight": 14, "unit": "kg", "feel": "R" },
+        { "id": "ex-c4", "name": "Glute bridge",     "type": "bodyweight", "sets": 3, "reps": 15, "feel": "E" },
+        { "id": "ex-c5", "name": "Side plank",       "type": "timed",      "sets": 3, "reps": 30, "feel": "R" }
+      ],
+      "pain": "None",
+      "notes": "In terms of the run, I was expecting to have a run of around 8 km/hour to maintain zone 2. My protocol to maintain zone 2 was that if even with deep breaths I could not keep my HR below 150 bpm, then I would lower the difficulties. This happened about 10 minutes into the run, where I had to lower to 7 km/h. After about 7 minutes, I had to lower again to 6 km/h. At this rate, I was running but if I wanted to I could have walked it because it felt like a brisk walk pace. Still I made the effort to keep running. This slow running, I am not accustomed to, and it created a lot of strain in my calves. After about 12 minutes (29 minutes into the run) I had to lower to 5 km/h but since at this pace I could not run anymore and had to walk, I created more incline at walked at 5 km/h @ 6% incline for 16 more minutes. My average HR for the whole time was 140 bpm but I was bummed to have such a meager rhythm.",
+      "generatedLog": "",
+      "savedAt": 1746316800000
+    },
+    {
+      "id": "s-20260505-a",
+      "date": "2026-05-05",
+      "dayIdx": 0,
+      "dayLetter": "A",
+      "dayName": "Legs",
+      "duration": 90,
+      "avgHR": 140,
+      "overallFeel": "R — Right",
+      "sleep": 5,
+      "protein": "Yes",
+      "energy": null,
+      "warmup": null,
+      "exercises": [
+        { "id": "ex-a1", "name": "Goblet squat",           "type": "weighted",      "sets": 3, "reps": 10, "weight": 10,  "unit": "kg",      "feel": "R" },
+        { "id": "ex-a2", "name": "Leg press",               "type": "weighted",      "sets": 3, "reps": 10, "weight": 109, "unit": "kg",      "feel": "R" },
+        { "id": "ex-a3", "name": "Romanian deadlift (DB)",   "type": "weighted_side", "sets": 3, "reps": 10, "weight": 15,  "unit": "kg/side", "feel": "R" },
+        { "id": "ex-a4", "name": "Leg curl",                 "type": "weighted",      "sets": 3, "reps": 10, "weight": 50,  "unit": "kg",      "feel": "R" },
+        { "id": "ex-a5", "name": "Leg extension",            "type": "weighted",      "sets": 3, "reps": 10, "weight": 50,  "unit": "kg",      "feel": "R" },
+        { "id": "ex-a6", "name": "Hip abductor machine",     "type": "weighted",      "sets": 3, "reps": 10, "weight": 90,  "unit": "kg",      "feel": "E" },
+        { "id": "ex-a7", "name": "Hip adductor machine",     "type": "weighted",      "sets": 3, "reps": 10, "weight": 63,  "unit": "kg",      "feel": "R" },
+        { "id": "ex-a8", "name": "Glute kickback machine",   "type": "weighted",      "sets": 3, "reps": 10, "weight": 27,  "unit": "kg",      "feel": "E" }
+      ],
+      "pain": "None",
+      "notes": "For the romanian deadlift, I didnt struggle with the weight on my hamstring but rather how to do the technique properly so that it could actually hit my hamstring. The weight was low on my back so sometimes i had a bad form and it did not flex my hamstrings too much.",
+      "generatedLog": "",
+      "savedAt": 1746489600000
+    },
+    {
+      "id": "s-20260508-b",
+      "date": "2026-05-08",
+      "dayIdx": 1,
+      "dayLetter": "B",
+      "dayName": "Upper",
+      "duration": 75,
+      "avgHR": 130,
+      "overallFeel": "R — Right",
+      "sleep": 8,
+      "protein": "Yes",
+      "energy": null,
+      "warmup": null,
+      "exercises": [
+        { "id": "ex-b1", "name": "Bench press",             "type": "weighted",      "sets": 3, "reps": 10, "weight": 35, "unit": "kg total", "feel": "R" },
+        { "id": "ex-b2", "name": "Dumbbell overhead press", "type": "weighted_side", "sets": 3, "reps": 10, "weight": 9,  "unit": "kg/side",  "feel": "R" },
+        { "id": "ex-b3", "name": "Lat pulldown",            "type": "weighted",      "sets": 3, "reps": 10, "weight": 45, "unit": "kg",       "feel": "R" },
+        { "id": "ex-b4", "name": "Seated cable row",        "type": "weighted",      "sets": 3, "reps": 10, "weight": 45, "unit": "kg",       "feel": "R" },
+        { "id": "ex-b5", "name": "Dumbbell lateral raise",  "type": "weighted_side", "sets": 3, "reps": 10, "weight": 6,  "unit": "kg/side",  "feel": "H" },
+        { "id": "ex-b6", "name": "Cable face pull",         "type": "weighted",      "sets": 3, "reps": 15, "weight": 14, "unit": "kg",       "feel": "E" },
+        { "id": "ex-b7", "name": "Bicep curl (machine)",    "type": "weighted",      "sets": 3, "reps": 10, "weight": 27, "unit": "kg",       "feel": "R" },
+        { "id": "ex-b8", "name": "Tricep pushdown",         "type": "weighted",      "sets": 3, "reps": 10, "weight": 36, "unit": "kg",       "feel": "R" }
+      ],
+      "pain": "Completely unrelated to the movement, but during the cable face pull, I had a bad movement on my wrist while grabbing the supports. Nothing came of it but I need some tips on how to have proper form for this exercise.",
+      "notes": "For the warm-up, I'm trying to do 20 minutes with the warm-up to the warm-up (5 min), the full warm-up (10 min) and the a bit of a cool down period (5 min). In this instance, I felt quite great during the first phase and it was hard for me to actually reach 130-140 bpm. I had to increase the speed to 6.5 km/h and incline to 7% and with that I hovered around 135-140 for the entire ten minutes. The 20 minutes warm-up also explain why I'm taking around 75 minutes per session and I'm ok with this. Regarding the overhead press, I wrongly grabbed the 9 kg dumbbells but I could finish all the exercises in good form. I was just quite tired at the end, hence the R/H rating. For the lateral raise, I couldn't do 12 reps as the program stated. The going up was ok but the 3 second going down killed me in every set.",
+      "generatedLog": "",
+      "savedAt": 1746748800000
+    }
+  ],
+  "weights": {
+    "ex-a1": { "weight": 10,  "loggedAt": 1746489600000 },
+    "ex-a2": { "weight": 109, "loggedAt": 1746489600000 },
+    "ex-a3": { "weight": 15,  "loggedAt": 1746489600000 },
+    "ex-a4": { "weight": 50,  "loggedAt": 1746489600000 },
+    "ex-a5": { "weight": 50,  "loggedAt": 1746489600000 },
+    "ex-a6": { "weight": 90,  "loggedAt": 1746489600000 },
+    "ex-a7": { "weight": 63,  "loggedAt": 1746489600000 },
+    "ex-a8": { "weight": 27,  "loggedAt": 1746489600000 },
+    "ex-b1": { "weight": 35,  "loggedAt": 1746748800000 },
+    "ex-b2": { "weight": 9,   "loggedAt": 1746748800000 },
+    "ex-b3": { "weight": 45,  "loggedAt": 1746748800000 },
+    "ex-b4": { "weight": 45,  "loggedAt": 1746748800000 },
+    "ex-b5": { "weight": 6,   "loggedAt": 1746748800000 },
+    "ex-b6": { "weight": 14,  "loggedAt": 1746748800000 },
+    "ex-b7": { "weight": 27,  "loggedAt": 1746748800000 },
+    "ex-b8": { "weight": 36,  "loggedAt": 1746748800000 },
+    "ex-c3": { "weight": 14,  "loggedAt": 1746316800000 }
+  }
+}

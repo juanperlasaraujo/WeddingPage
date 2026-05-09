@@ -1,195 +1,1275 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>¡Nos casamos!</title>
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#1A3A6E">
+  <link rel="manifest" href="manifest.json">
+  <title>Gym Tracker</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #1A3A6E; --green: #1A5C3A; --amber: #7B5800; --purple: #4A235A;
+      --bg: #F2F2F7; --card: #fff; --border: #D1D1D6;
+      --text: #1C1C1E; --text2: #6C6C70; --red: #C62828;
+      --r: 12px;
+    }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg); color: var(--text); font-size: 16px;
+      padding-bottom: 130px; min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    .app-header {
+      background: var(--navy); color: #fff;
+      padding: 12px 16px; position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 1px 4px rgba(0,0,0,.25);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .app-header h1 { font-size: 18px; font-weight: 700; }
+    .app-header p  { font-size: 11px; opacity: .75; }
+    .header-btn {
+      background: rgba(255,255,255,.15); border: none; color: #fff;
+      font-size: 13px; font-weight: 600; padding: 6px 10px;
+      border-radius: 8px; cursor: pointer; -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ── Bottom nav ── */
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+      display: flex; background: var(--card);
+      border-top: 1px solid var(--border);
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    .nav-btn {
+      flex: 1; padding: 10px 4px 8px;
+      border: none; background: none; cursor: pointer;
+      font-size: 11px; color: var(--text2); font-weight: 500;
+      -webkit-tap-highlight-color: transparent;
+      display: flex; flex-direction: column; align-items: center; gap: 3px;
+    }
+    .nav-btn.active { color: var(--navy); }
+    .nav-icon { font-size: 20px; line-height: 1; }
+    .nav-btn.active .nav-icon { transform: scale(1.1); }
+
+    /* ── FAB ── */
+    .fab {
+      position: fixed; bottom: calc(env(safe-area-inset-bottom) + 62px);
+      left: 14px; right: 14px; z-index: 190;
+      padding: 15px; background: var(--navy); color: #fff;
+      border: none; border-radius: 14px; font-size: 16px; font-weight: 700;
+      cursor: pointer; box-shadow: 0 4px 16px rgba(0,0,0,.25);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ── Cards ── */
+    .content { padding: 12px 14px; }
+    .card {
+      background: var(--card); border-radius: var(--r);
+      border: 1px solid var(--border); padding: 14px; margin-bottom: 12px;
+    }
+    .card-title {
+      font-size: 11px; font-weight: 700; color: var(--text2);
+      text-transform: uppercase; letter-spacing: .6px; margin-bottom: 12px;
+    }
+
+    /* ── Form ── */
+    label { display: block; font-size: 12px; color: var(--text2); font-weight: 500; margin-bottom: 4px; }
+    input, select, textarea {
+      width: 100%; padding: 10px 12px;
+      border: 1px solid var(--border); border-radius: 8px;
+      font-size: 16px; font-family: inherit;
+      color: var(--text); background: var(--card);
+      appearance: none; -webkit-appearance: none;
+    }
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%236C6C70' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 11px center;
+      padding-right: 30px;
+    }
+    textarea { height: 88px; resize: vertical; }
+    .frow { margin-bottom: 10px; }
+    .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+    .g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+    .g4 { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 6px; }
+    .g4 input, .g4 select { padding: 9px 4px; font-size: 15px; text-align: center; }
+    .g4 select { padding-right: 20px; background-position: right 4px center; }
+
+    /* ── Day tabs ── */
+    .day-tabs {
+      display: flex; gap: 8px; padding: 12px 14px;
+      background: var(--card); border-bottom: 1px solid var(--border);
+      overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+    }
+    .day-tabs::-webkit-scrollbar { display: none; }
+    .day-tab {
+      flex-shrink: 0; padding: 7px 16px; border-radius: 20px;
+      border: 1.5px solid var(--border); background: none;
+      color: var(--text2); font-size: 14px; font-weight: 500;
+      cursor: pointer; -webkit-tap-highlight-color: transparent;
+    }
+    .day-tab.act-0 { background: var(--navy);   color:#fff; border-color: var(--navy);   }
+    .day-tab.act-1 { background: var(--green);  color:#fff; border-color: var(--green);  }
+    .day-tab.act-2 { background: var(--amber);  color:#fff; border-color: var(--amber);  }
+    .day-tab.act-3 { background: var(--purple); color:#fff; border-color: var(--purple); }
+
+    /* ── Log exercise cards ── */
+    .ex-card {
+      border: 1px solid var(--border); border-left-width: 4px;
+      border-radius: 10px; padding: 11px; margin-bottom: 9px;
+      transition: opacity .2s;
+    }
+    .ex-card.day-0 { border-left-color: var(--navy);   }
+    .ex-card.day-1 { border-left-color: var(--green);  }
+    .ex-card.day-2 { border-left-color: var(--amber);  }
+    .ex-card.day-3 { border-left-color: var(--purple); }
+    .ex-card.skipped { opacity: .35; }
+    .ex-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 9px;
+    }
+    .ex-name { font-size: 14px; font-weight: 600; }
+    .skip-btn {
+      font-size: 11px; font-weight: 700; padding: 3px 9px;
+      border-radius: 10px; border: 1.5px solid var(--border);
+      background: none; color: var(--text2); cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .skip-btn.on { border-color: var(--red); color: var(--red); }
+    .bw-pill {
+      display: flex; align-items: center; justify-content: center;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 8px; font-size: 13px; font-weight: 600;
+      color: var(--text2); min-height: 41px;
+    }
+
+    /* ── Buttons ── */
+    .btn {
+      display: block; width: 100%; padding: 13px;
+      border: none; border-radius: 10px;
+      font-size: 16px; font-weight: 600; cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn + .btn { margin-top: 8px; }
+    .btn-primary { background: var(--navy); color: #fff; }
+    .btn-green   { background: var(--green); color: #fff; }
+    .btn-grey    { background: #E5E5EA; color: var(--text); }
+    .btn-red     { background: var(--red); color: #fff; }
+    .btn-sm {
+      padding: 6px 12px; font-size: 13px; font-weight: 600;
+      border: none; border-radius: 8px; cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* ── Output box ── */
+    .output-pre {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 8px; padding: 12px;
+      font-family: 'Courier New', monospace; font-size: 12.5px;
+      white-space: pre-wrap; word-break: break-word; line-height: 1.5;
+      margin-bottom: 10px;
+    }
+
+    /* ── Programme editor ── */
+    .prog-day {
+      background: var(--card); border-radius: var(--r);
+      border: 1px solid var(--border); margin-bottom: 10px; overflow: hidden;
+    }
+    .prog-day-hdr {
+      display: flex; align-items: center; padding: 12px 14px;
+      cursor: pointer; -webkit-tap-highlight-color: transparent;
+      border-bottom: 1px solid transparent; user-select: none;
+    }
+    .prog-day-hdr.open { border-bottom-color: var(--border); }
+    .prog-day-letter {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 800; color: #fff; flex-shrink: 0;
+      margin-right: 10px;
+    }
+    .dl-0 { background: var(--navy); }
+    .dl-1 { background: var(--green); }
+    .dl-2 { background: var(--amber); }
+    .dl-3 { background: var(--purple); }
+    .prog-day-name { flex: 1; font-weight: 600; font-size: 15px; }
+    .prog-day-name-input {
+      flex: 1; font-weight: 600; font-size: 15px; border: none;
+      border-bottom: 1.5px solid var(--navy); padding: 0 4px;
+      background: none; outline: none;
+    }
+    .prog-hdr-actions { display: flex; gap: 6px; align-items: center; }
+    .icon-btn {
+      padding: 5px; border: none; background: none;
+      cursor: pointer; -webkit-tap-highlight-color: transparent;
+      color: var(--text2); font-size: 16px; border-radius: 6px;
+    }
+    .icon-btn:active { background: var(--bg); }
+    .prog-day-body { padding: 10px 14px 12px; display: none; }
+    .prog-day-body.open { display: block; }
+    .prog-ex-row {
+      display: flex; align-items: center; padding: 9px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .prog-ex-row:last-child { border-bottom: none; }
+    .prog-ex-info { flex: 1; min-width: 0; }
+    .prog-ex-name { font-size: 14px; font-weight: 500; }
+    .prog-ex-sub { font-size: 11px; color: var(--text2); margin-top: 1px; }
+    .type-badge {
+      font-size: 10px; font-weight: 700; padding: 2px 7px;
+      border-radius: 8px; margin-right: 6px; flex-shrink: 0;
+    }
+    .tb-w  { background: #E3F2FD; color: #0D47A1; }
+    .tb-ws { background: #E8F5E9; color: #1B5E20; }
+    .tb-c  { background: #FFF8E1; color: #E65100; }
+    .tb-bw { background: #F3E5F5; color: #4A235A; }
+
+    /* ── Progress chart ── */
+    .chart-wrap { position: relative; height: 260px; }
+    .ex-select-wrap { margin-bottom: 10px; }
+    .stat-row { display: flex; gap: 10px; margin-top: 10px; }
+    .stat-box {
+      flex: 1; background: var(--bg); border-radius: 8px;
+      padding: 10px; text-align: center;
+    }
+    .stat-val { font-size: 20px; font-weight: 700; color: var(--navy); }
+    .stat-lbl { font-size: 11px; color: var(--text2); margin-top: 2px; }
+
+    /* ── Modals ── */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 300;
+      background: rgba(0,0,0,.45); display: flex;
+      align-items: flex-end;
+    }
+    .modal-sheet {
+      width: 100%; background: var(--card);
+      border-radius: 20px 20px 0 0; padding: 20px 16px 32px;
+      max-height: 90vh; overflow-y: auto;
+    }
+    .modal-title {
+      font-size: 17px; font-weight: 700; margin-bottom: 16px;
+      padding-bottom: 12px; border-bottom: 1px solid var(--border);
+    }
+
+    /* ── Misc ── */
+    .hidden { display: none !important; }
+    .placeholder { text-align: center; padding: 44px 20px; color: var(--text2); }
+    .placeholder h2 { font-size: 21px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+    .section-add-btn {
+      width: 100%; padding: 10px; margin-top: 8px;
+      background: var(--bg); border: 1.5px dashed var(--border);
+      border-radius: 10px; font-size: 14px; font-weight: 600;
+      color: var(--text2); cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 14px 0; }
+    .legend-row { display: flex; gap: 12px; font-size: 11px; color: var(--text2); margin-top: 8px; flex-wrap: wrap; }
+    .legend-item { display: flex; align-items: center; gap: 4px; }
+  </style>
 </head>
 <body>
-  
-<!-- Right-side Ribbon -->
-<div class="ribbon-right">
-  <div class="ribbon-menu">
-    <!-- Navigation Links -->
-    <a href="#home">Inicio</a>
-    <a href="#details">Info</a>
-    <a href="#rsvp">Confirmar</a>
-    <a href="#gift">Regalos</a>
-  </div>
-  <div class="ribbon-menu ribbon-language">
-    <!-- Language Links -->
-    <a href="index.html">ES</a>
-    <a href="en.html">EN</a>
+
+<!-- App header -->
+<div class="app-header">
+  <div><h1 id="hdr-title">Gym Tracker</h1><p id="hdr-sub">Phase 1 — Foundation</p></div>
+  <button class="header-btn hidden" id="hdr-save-day" onclick="saveDayName()">Save</button>
+</div>
+
+<!-- ─── VIEW: LOG ─────────────────────────────────────────────── -->
+<div id="view-log">
+  <div class="day-tabs" id="day-tabs"></div>
+  <div class="content">
+    <div id="log-placeholder" class="placeholder">
+      <h2>Select a day</h2>
+      <p>Tap a day above to start logging your session.</p>
+    </div>
+    <div id="log-form" class="hidden">
+      <!-- Session header -->
+      <div class="card">
+        <div class="card-title">Session</div>
+        <div class="frow"><label>Date</label><input type="date" id="f-date"></div>
+        <div class="g2">
+          <div><label>Duration (min)</label><input type="number" id="f-dur" placeholder="55" inputmode="numeric"></div>
+          <div><label>Avg HR (bpm)</label><input type="number" id="f-hr" placeholder="135" inputmode="numeric"></div>
+        </div>
+        <div class="g2">
+          <div>
+            <label>Overall feel</label>
+            <select id="f-feel">
+              <option value="">Select</option>
+              <option value="E — Easy">E — Easy</option>
+              <option value="R — Right">R — Right</option>
+              <option value="H — Hard">H — Hard</option>
+              <option value="TH — Too Hard">TH — Too Hard</option>
+            </select>
+          </div>
+          <div><label>Sleep (hrs)</label><input type="number" id="f-sleep" placeholder="7" step="0.5" inputmode="decimal"></div>
+        </div>
+        <div class="g3">
+          <div>
+            <label>Protein</label>
+            <select id="f-protein">
+              <option value="">—</option>
+              <option value="Yes">Yes</option>
+              <option value="Partial">Partial</option>
+              <option value="No">No</option>
+            </select>
+          </div>
+          <div>
+            <label>Energy</label>
+            <select id="f-energy">
+              <option value="">—</option>
+              <option value="Low">Low</option>
+              <option value="Normal">Normal</option>
+              <option value="High">High</option>
+            </select>
+          </div>
+          <div>
+            <label>Warm-up</label>
+            <select id="f-warmup">
+              <option value="">—</option>
+              <option value="Full (20 min)">Full (20 min)</option>
+              <option value="Short (10 min)">Short (10 min)</option>
+              <option value="Skipped">Skipped</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <!-- Exercises -->
+      <div class="card">
+        <div class="card-title">Exercises</div>
+        <div id="ex-list"></div>
+      </div>
+      <!-- Notes -->
+      <div class="card">
+        <div class="card-title">Notes</div>
+        <div class="frow"><label>Pain / discomfort</label><input type="text" id="f-pain" placeholder="None"></div>
+        <div><label>Notes</label><textarea id="f-notes" placeholder="Energy levels, what felt different, questions for Claude…"></textarea></div>
+      </div>
+      <!-- Output -->
+      <div id="output-card" class="card hidden">
+        <div class="card-title">Session log — paste into Claude</div>
+        <div id="output-pre" class="output-pre"></div>
+        <button class="btn btn-green" id="copy-btn" onclick="copyLog()">Copy to clipboard</button>
+        <button class="btn btn-grey" style="margin-top:8px" onclick="newSession()">New session</button>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- Hero Section -->
-<section id="home" class="hero">
-  <div class="hero-img"></div>
-  <div class="hero-text">
-    <h1>Juan y Laura</h1>
-    <h3>28 de Marzo, 2026 - 17:00</h3>
-    <div id="countdown">
-      <span id="days"></span> días 
-      <span id="hours"></span> horas 
-      <span id="minutes"></span> mins 
+<!-- ─── VIEW: PROGRAMME ───────────────────────────────────────── -->
+<div id="view-programme" class="hidden">
+  <div class="content">
+    <div id="prog-list"></div>
+    <button class="section-add-btn" id="add-day-btn" onclick="addDay()">+ Add Day</button>
+    <hr class="divider">
+    <div class="card">
+      <div class="card-title">Data</div>
+      <button class="btn btn-grey" onclick="exportBackup()">Export backup (JSON)</button>
+      <button class="btn btn-grey" style="margin-top:8px" onclick="document.getElementById('import-input').click()">Import backup (JSON)</button>
+      <input type="file" id="import-input" accept=".json" class="hidden" onchange="importBackup(event)">
     </div>
-    <a href="https://www.google.com/calendar/render?action=TEMPLATE&text=Boda+Laura+y+Juan&dates=20260328T200000Z/20260329T050000Z&details=Lugar:+La+Baguala+Hotel+de+Campo+y+Chacras%0A%0AUbicación:+https://maps.app.goo.gl/dRNbDmXWGuF1tWRo6&location=La+Baguala+Hotel+de+Campo+y+Chacras,+Montevideo,+Uruguay" target="_blank" class="btn">Agregar a Google Calendar</a>
   </div>
-</section>
+</div>
 
-<!-- Wedding Details -->
-<section id="details" class="section highlight-box">
-  <h2>¿Dónde nos encontramos?</h2>
-  <div class="details-blob">
-    <h3>La Baguala</h3>
-    <h3>Montevideo, Uruguay &#128149</h3>
-    <p>Vestimenta: Formal</p>
+<!-- ─── VIEW: PROGRESS ────────────────────────────────────────── -->
+<div id="view-progress" class="hidden">
+  <div class="content">
+    <div class="card">
+      <div class="ex-select-wrap">
+        <label>Exercise</label>
+        <select id="prog-ex-select" onchange="renderChart()">
+          <option value="">Select an exercise…</option>
+        </select>
+      </div>
+    </div>
+    <div id="chart-card" class="card hidden">
+      <div class="card-title" id="chart-title">Weight over time</div>
+      <div class="chart-wrap"><canvas id="prog-chart"></canvas></div>
+      <div class="stat-row" id="stat-row"></div>
+      <div class="legend-row">
+        <div class="legend-item">↑ <span>E — session felt easy</span></div>
+        <div class="legend-item">↓ <span>H / TH — session felt hard</span></div>
+        <div class="legend-item">· <span>R — right level</span></div>
+      </div>
+    </div>
+    <div id="no-data-msg" class="card hidden">
+      <p style="color:var(--text2); font-size:14px; text-align:center; padding:8px 0">No session data for this exercise yet.</p>
+    </div>
   </div>
-  <div class="map-embed">
-    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3274.3635738772546!2d-56.3868188!3d-34.8470908!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95a1d14bf271d16d%3A0x9335028719095d8!2sLa%20Baguala%20Hotel%20de%20Campo%20y%20Chacras!5e0!3m2!1ses-419!2sch!4v1757204973405!5m2!1ses-419!2sch" 
-            width="600"
-            height="450" 
-            style="border:0;" 
-            allowfullscreen="" 
-            loading="lazy" 
-            referrerpolicy="no-referrer-when-downgrade"></iframe>
-  </div>
-  <div>
-    <svg class="uruguay-motif" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="120" height="120">
-      <!-- Simple ceibo flower example -->
-      <circle cx="100" cy="100" r="50" fill="#f4e1a4" />
-      <circle cx="100" cy="100" r="30" fill="#00688b" />
-      <circle cx="100" cy="100" r="15" fill="#f4e1a4" />
-    </svg>
-  </div>
-</section>
-<img src="images/photo5.jpg" alt="Lau y Juan" class="interspersed-photo">
+</div>
 
-<!-- RSVP Form -->
-<section id="rsvp" class="section">
-  <h2>Confirmá tu asistencia</h2>
-  <p>Un formulario por persona</p>
-  <form name="rsvp" method="POST" data-netlify="true" action="/gracias.html" data-netlify-honeypot="bot-field">
-    <input type="hidden" name="form-name" value="rsvp">
-    <p style="display:none">
-      No llenar: <input name="bot-field">
-    </p>
-    <input type="text" name="name" placeholder="Nombre" required>
-    <input type="email" name="email" placeholder="E-mail" required>
-    <select name="attendance" required>
-      <option value="">¿Nos acompañás?</option>
-      <option value="yes">Sí</option>
-      <option value="no">No</option>
-    </select>
-    <input type="text" name="song" placeholder="¿Qué canción no te puede faltar?">
-    <select name="diet" required>
-      <option value="">¿Tenés alguna restricción alimenticia?</option>
-      <option value="vegetarian">Vegetariano/a</option>
-      <option value="vegan">Vegano/a</option>
-      <option value="celiac">Intolerante al gluten</option>
-      <option value="sugar">Intolerante a la lactosa</option>
-      <option value="no">Ninguna</option>
-      <option value="other">Otra, especificar en mensaje</option>
-    </select>
-    <textarea name="message" placeholder="Dejanos un mensaje"></textarea>
-    <button type="submit">Enviar</button>
-  </form>
-  <div>
-    <svg class="uruguay-motif" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="120" height="120">
-      <!-- Simple ceibo flower example -->
-      <circle cx="100" cy="100" r="50" fill="#f4e1a4" />
-      <circle cx="100" cy="100" r="30" fill="#00688b" />
-      <circle cx="100" cy="100" r="15" fill="#f4e1a4" />
-    </svg>
+<!-- ─── MODAL: Add / Edit exercise ───────────────────────────── -->
+<div id="modal-ex" class="modal-overlay hidden" onclick="closeExModal(event)">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
+    <div class="modal-title" id="modal-ex-title">Add Exercise</div>
+    <input type="hidden" id="modal-day-idx">
+    <input type="hidden" id="modal-ex-id">
+    <div class="frow"><label>Exercise name</label><input type="text" id="modal-ex-name" placeholder="e.g. Bench press"></div>
+    <div class="frow">
+      <label>Type</label>
+      <select id="modal-ex-type" onchange="onModalTypeChange()">
+        <option value="weighted">Weighted</option>
+        <option value="weighted_side">Weighted per side</option>
+        <option value="cardio">Cardio</option>
+      </select>
+    </div>
+    <!-- Weighted fields -->
+    <div id="modal-weighted-fields">
+      <div class="g3">
+        <div><label>Default sets</label><input type="number" id="modal-sets" value="3" inputmode="numeric"></div>
+        <div><label>Default reps</label><input type="number" id="modal-reps" value="10" inputmode="numeric"></div>
+        <div><label>Default weight (kg)</label><input type="number" id="modal-weight" step="0.5" inputmode="decimal"></div>
+      </div>
+    </div>
+    <!-- Cardio fields -->
+    <div id="modal-cardio-fields" class="hidden">
+      <div class="g2">
+        <div><label>Default duration (min)</label><input type="number" id="modal-dur" value="45" inputmode="numeric"></div>
+        <div><label>Default distance (km)</label><input type="number" id="modal-dist" step="0.1" placeholder="—" inputmode="decimal"></div>
+      </div>
+    </div>
+    <button class="btn btn-primary" style="margin-top:6px" onclick="saveExerciseModal()">Save</button>
+    <button class="btn btn-grey" style="margin-top:8px" onclick="closeExModal()">Cancel</button>
   </div>
-</section>
-<section id="planner-contact">
-    <h2>¿Dudas o consultas?</h2>
-  <div class="blob-content">
-    <p>Si tienes alguna pregunta, puedes contactar a nuestra wedding planner, <strong>Lily</strong></p>
-    <a href="https://wa.me/+59892308938?text=Hola%2C%20tengo%20una%20consulta%20sobre%20la%20boda"
-       class="btn-whatsapp" target="_blank" rel="noopener noreferrer">
-       Contactar por WhatsApp
-    </a>
-  </div>
-  <div>
-    <svg class="uruguay-motif" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="120" height="120">
-      <!-- Simple ceibo flower example -->
-      <circle cx="100" cy="100" r="50" fill="#f4e1a4" />
-      <circle cx="100" cy="100" r="30" fill="#00688b" />
-      <circle cx="100" cy="100" r="15" fill="#f4e1a4" />
-    </svg>
-  </div>
-</section>
+</div>
 
-<img src="images/photo4.jpg" alt="Lau y Juan" class="interspersed-photo">
-
-<section id="gift" class="section"></section>
-  <h2>Sugerencia de regalo</h2>
-  <div class="gift-blob">
-    <p>Si además de contar con tu presencia, querés tener un detalle con nosotros, te compartimos nuestras cuentas:</p>
-    <p>IBAN Suiza: <strong>CH96 0024 3243 5866 5840 B</strong></p>
-    <p>Santander Uruguay UYU: <strong>0070 0000 0098 9800</strong></p>
-    <p>Santander Uruguay USD: <strong>0070 0051 0095 3279</strong></p>
+<!-- ─── MODAL: Confirm ────────────────────────────────────────── -->
+<div id="modal-confirm" class="modal-overlay hidden" onclick="closeConfirm()">
+  <div class="modal-sheet" onclick="event.stopPropagation()">
+    <div class="modal-title" id="confirm-title">Confirm</div>
+    <p id="confirm-msg" style="margin-bottom:16px;color:var(--text2)"></p>
+    <button class="btn btn-red" id="confirm-ok">Delete</button>
+    <button class="btn btn-grey" style="margin-top:8px" onclick="closeConfirm()">Cancel</button>
   </div>
-  <div>
-    <svg class="uruguay-motif" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="120" height="120">
-      <!-- Simple ceibo flower example -->
-      <circle cx="100" cy="100" r="50" fill="#f4e1a4" />
-      <circle cx="100" cy="100" r="30" fill="#00688b" />
-      <circle cx="100" cy="100" r="15" fill="#f4e1a4" />
-    </svg>
-  </div>
-</section>
-  
-<!-- Instagram Hashtag -->
-<section class="section">
-  <h2>Compartí tus fotos</h2>
-  <a href="https://www.instagram.com/explore/tags/lauyjuansecasan/" target="_blank" class="btn insta-btn">#lauyjuansecasan</a>
-  <div>
-    <svg class="uruguay-motif" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="120" height="120">
-      <!-- Simple ceibo flower example -->
-      <circle cx="100" cy="100" r="50" fill="#f4e1a4" />
-      <circle cx="100" cy="100" r="30" fill="#00688b" />
-      <circle cx="100" cy="100" r="15" fill="#f4e1a4" />
-    </svg>
-  </div>
-</section>
+</div>
 
+<!-- FAB -->
+<button class="fab hidden" id="fab" onclick="generateLog()">Generate session log</button>
 
+<!-- Bottom nav -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" data-view="log" onclick="showView('log')">
+    <span class="nav-icon">📋</span>Log
+  </button>
+  <button class="nav-btn" data-view="programme" onclick="showView('programme')">
+    <span class="nav-icon">📝</span>Programme
+  </button>
+  <button class="nav-btn" data-view="progress" onclick="showView('progress')">
+    <span class="nav-icon">📈</span>Progress
+  </button>
+</nav>
 
-<!-- Countdown JS -->
 <script>
-const weddingDate = new Date("March 28, 2026 17:00:00").getTime();
-const countdown = setInterval(() => {
-    const now = new Date().getTime();
-    const distance = weddingDate - now;
-    if(distance < 0) return clearInterval(countdown);
-    document.getElementById("days").innerText = Math.floor(distance/(1000*60*60*24));
-    document.getElementById("hours").innerText = Math.floor((distance%(1000*60*60*24))/(1000*60*60));
-    document.getElementById("minutes").innerText = Math.floor((distance%(1000*60*60))/(1000*60));
-}, 1000);
+// ═══════════════════════════════════════════════════════════════════════════════
+// 1. CONSTANTS & STATE
+// ═══════════════════════════════════════════════════════════════════════════════
+const LETTERS = ['A','B','C','D'];
+const KEYS = { PROG:'gym_prog2', SESSIONS:'gym_sessions2', WEIGHTS:'gym_weights2' };
+const DAY_COLORS = ['var(--navy)','var(--green)','var(--amber)','var(--purple)'];
 
-// Smooth scroll for navigation ribbon only
-document.querySelectorAll('.ribbon-nav a').forEach(anchor => {
-  anchor.addEventListener('click', function(e){
-    e.preventDefault();
-    document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+let prog     = null;  // { version, days: [{id, name, exercises:[...]}] }
+let sessions = [];    // [{id, date, dayIdx, dayLetter, dayName, dur, hr, feel, sleep, protein, energy, warmup, exercises:[...], pain, notes}]
+let weights  = {};    // { exId: { weight, loggedAt } }
+
+let currentDayIdx = -1;
+let skipSet = new Set();  // exIds to skip in current session
+let progressChart = null;
+let confirmCallback = null;
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// 2. UTILITIES
+// ═══════════════════════════════════════════════════════════════════════════════
+function uid()   { return Date.now().toString(36) + Math.random().toString(36).slice(2); }
+function today() {
+  const d = new Date();
+  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+}
+function esc(s) { return String(s??'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function ge(id) { return document.getElementById(id); }
+function gv(id) { const e = ge(id); return e ? e.value.trim() : ''; }
+function dayLetter(idx) { return LETTERS[idx] || '?'; }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// 3. STORAGE
+// ═══════════════════════════════════════════════════════════════════════════════
+function loadAll() {
+  prog     = JSON.parse(localStorage.getItem(KEYS.PROG)     || 'null') || defaultProg();
+  sessions = JSON.parse(localStorage.getItem(KEYS.SESSIONS) || '[]');
+  weights  = JSON.parse(localStorage.getItem(KEYS.WEIGHTS)  || '{}');
+  migratePhase1Weights();
+}
+function saveProg()     { localStorage.setItem(KEYS.PROG,     JSON.stringify(prog));     }
+function saveSessions() { localStorage.setItem(KEYS.SESSIONS, JSON.stringify(sessions)); }
+function saveWeights()  { localStorage.setItem(KEYS.WEIGHTS,  JSON.stringify(weights));  }
+
+function migratePhase1Weights() {
+  // Phase 1 stored weights as { exerciseName: numericWeight } under key 'gw'
+  const old = JSON.parse(localStorage.getItem('gw') || '{}');
+  if (!Object.keys(old).length) return;
+  const nameToId = {};
+  prog.days.forEach(d => d.exercises.forEach(e => { nameToId[e.name] = e.id; }));
+  const now = Date.now();
+  for (const [name, weight] of Object.entries(old)) {
+    const id = nameToId[name];
+    if (id && !weights[id]) weights[id] = { weight, loggedAt: now };
+  }
+  saveWeights();
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// 4. DEFAULT PROGRAMME (Phase 1 migration)
+// ═══════════════════════════════════════════════════════════════════════════════
+function defaultProg() {
+  return {
+    version: 2,
+    days: [
+      { id: uid(), name: 'Legs', exercises: [
+        { id:'ex-a1', name:'Goblet squat',           type:'weighted',      sets:3, reps:12, weight:10,  updatedAt:0 },
+        { id:'ex-a2', name:'Leg press',               type:'weighted',      sets:3, reps:10, weight:103, updatedAt:0 },
+        { id:'ex-a3', name:'Romanian deadlift (DB)',   type:'weighted_side', sets:3, reps:10, weight:15,  updatedAt:0 },
+        { id:'ex-a4', name:'Leg curl',                 type:'weighted',      sets:3, reps:10, weight:45,  updatedAt:0 },
+        { id:'ex-a5', name:'Leg extension',            type:'weighted',      sets:3, reps:10, weight:50,  updatedAt:0 },
+        { id:'ex-a6', name:'Hip abductor machine',     type:'weighted',      sets:3, reps:12, weight:90,  updatedAt:0 },
+        { id:'ex-a7', name:'Hip adductor machine',     type:'weighted',      sets:3, reps:12, weight:63,  updatedAt:0 },
+        { id:'ex-a8', name:'Glute kickback machine',   type:'weighted',      sets:3, reps:12, weight:27,  updatedAt:0 },
+      ]},
+      { id: uid(), name: 'Upper', exercises: [
+        { id:'ex-b1', name:'Bench press',              type:'weighted',      sets:3, reps:10, weight:35, updatedAt:0 },
+        { id:'ex-b2', name:'Dumbbell overhead press',  type:'weighted_side', sets:3, reps:10, weight:9,  updatedAt:0 },
+        { id:'ex-b3', name:'Lat pulldown',             type:'weighted',      sets:3, reps:10, weight:45, updatedAt:0 },
+        { id:'ex-b4', name:'Seated cable row',         type:'weighted',      sets:3, reps:10, weight:45, updatedAt:0 },
+        { id:'ex-b5', name:'Dumbbell lateral raise',   type:'weighted_side', sets:3, reps:12, weight:6,  updatedAt:0 },
+        { id:'ex-b6', name:'Cable face pull',          type:'weighted',      sets:3, reps:15, weight:14, updatedAt:0 },
+        { id:'ex-b7', name:'Bicep curl (machine)',     type:'weighted',      sets:3, reps:10, weight:27, updatedAt:0 },
+        { id:'ex-b8', name:'Tricep pushdown',          type:'weighted',      sets:3, reps:10, weight:36, updatedAt:0 },
+      ]},
+      { id: uid(), name: 'Cardio', exercises: [
+        { id:'ex-c1', name:'Zone 2 run/cycle', type:'cardio',     duration:45, distance:null, updatedAt:0 },
+        { id:'ex-c2', name:'Dead bug',         type:'bodyweight', sets:3, reps:10, repSuffix:'/side', updatedAt:0 },
+        { id:'ex-c3', name:'Pallof press',     type:'weighted',   sets:3, reps:10, weight:14, repSuffix:'/side', updatedAt:0 },
+        { id:'ex-c4', name:'Glute bridge',     type:'bodyweight', sets:3, reps:15, updatedAt:0 },
+        { id:'ex-c5', name:'Side plank',       type:'timed',      sets:3, reps:30, updatedAt:0 },
+      ]},
+      { id: uid(), name: 'Optional', exercises: [
+        { id:'ex-d1', name:'Goblet squat (light)',      type:'weighted',      sets:2, reps:15, weight:10, updatedAt:0 },
+        { id:'ex-d2', name:'Romanian deadlift (light)', type:'weighted_side', sets:2, reps:12, weight:15, updatedAt:0 },
+        { id:'ex-d3', name:'Dumbbell bench press',      type:'weighted_side', sets:2, reps:12, weight:35, updatedAt:0 },
+        { id:'ex-d4', name:'Dumbbell row',              type:'weighted_side', sets:2, reps:12, weight:15, repSuffix:'/side', updatedAt:0 },
+        { id:'ex-d5', name:'Dumbbell shoulder press',   type:'weighted_side', sets:2, reps:12, weight:9,  updatedAt:0 },
+        { id:'ex-d6', name:'Zone 2 cardio finish',      type:'cardio',        duration:20, distance:null, updatedAt:0 },
+      ]},
+    ]
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// 5. NAVIGATION
+// ═══════════════════════════════════════════════════════════════════════════════
+function showView(name) {
+  ['log','programme','progress'].forEach(v => {
+    ge('view-' + v).classList.toggle('hidden', v !== name);
   });
-});
-</script>
+  document.querySelectorAll('.nav-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.view === name);
+  });
+  ge('fab').classList.toggle('hidden', name !== 'log');
 
-<!-- Floating scroll button (place before </body>) -->
-<a href="#planner-contact" class="whatsapp-float" aria-label="Ir a contacto con la wedding planner">
-  <!-- same inline SVG icon as before -->
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
-    <path fill="#ffffff" d="M20.52 3.48A11.86 11.86 0 0 0 12 0C5.37 0 .02 5.35.02 12c0 2.12.55 4.19 1.6 6.03L0 24l6.2-1.58A11.9 11.9 0 0 0 12 24c6.63 0 12-5.35 12-12 0-1.96-.5-3.8-1.48-5.52zM12 21.7c-1.9 0-3.72-.5-5.3-1.44l-.38-.22-3.68.94.98-3.6-.25-.37A9.34 9.34 0 0 1 2.7 12c0-5.04 4.1-9.15 9.3-9.15 2.48 0 4.81.97 6.56 2.73a9.1 9.1 0 0 1 2.74 6.42c0 5.04-4.07 9.15-9.3 9.15z"/>
-    <path fill="#ffffff" d="M17.3 14.6c-.3-.15-1.78-.88-2.05-.98-.27-.1-.47-.15-.67.15-.2.3-.78.98-.95 1.18-.17.2-.34.22-.63.07-.3-.15-1.27-.47-2.41-1.48-.89-.79-1.48-1.76-1.65-2.05-.17-.3-.02-.46.12-.61.12-.12.27-.3.4-.45.13-.15.17-.26.27-.43.1-.17.04-.32-.02-.46-.06-.13-.67-1.62-.92-2.21-.24-.58-.48-.5-.66-.51l-.56-.01c-.18 0-.46.07-.7.33-.24.26-.92.9-.92 2.2s.94 2.56 1.07 2.74c.13.17 1.83 2.82 4.4 3.85 2.57 1.03 2.57.69 3.04.64.46-.05 1.49-.6 1.7-1.18.2-.58.2-1.07.14-1.18-.06-.12-.24-.2-.54-.35z"/>
-  </svg>
-</a>
+  if (name === 'programme') renderProg();
+  if (name === 'progress')  { populateExSelect(); renderChart(); }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// 6. LOG SCREEN
+// ═══════════════════════════════════════════════════════════════════════════════
+function renderDayTabs() {
+  const tabs = ge('day-tabs');
+  tabs.innerHTML = prog.days.map((d, i) =>
+    `<button class="day-tab${i===currentDayIdx?' act-'+i:''}" onclick="selectDay(${i})">${dayLetter(i)} — ${esc(d.name)}</button>`
+  ).join('');
+}
+
+function selectDay(idx) {
+  currentDayIdx = idx;
+  skipSet.clear();
+  ge('log-placeholder').classList.add('hidden');
+  ge('log-form').classList.remove('hidden');
+  ge('output-card').classList.add('hidden');
+  ge('fab').classList.remove('hidden');
+  ge('f-date').value = today();
+  renderDayTabs();
+  renderExercises();
+}
+
+function renderExercises() {
+  const day = prog.days[currentDayIdx];
+  const list = ge('ex-list');
+  list.innerHTML = '';
+  day.exercises.forEach(ex => list.appendChild(buildExCard(ex)));
+}
+
+function getStartWeight(ex) {
+  const stored = weights[ex.id];
+  if (!stored) return ex.weight ?? null;
+  // If programme was updated after last session, use programme default
+  if (ex.updatedAt && ex.updatedAt > stored.loggedAt) return ex.weight ?? null;
+  return stored.weight ?? ex.weight ?? null;
+}
+
+function buildExCard(ex) {
+  const div = document.createElement('div');
+  const dayClass = 'day-' + currentDayIdx;
+  div.className = `ex-card ${dayClass}`;
+  div.id = 'card-' + ex.id;
+
+  const skipLabel = skipSet.has(ex.id) ? 'Skipped' : 'Skip';
+  const skipClass = skipSet.has(ex.id) ? 'on' : '';
+
+  let inputsHtml = '';
+  if (ex.type === 'cardio') {
+    const defDur  = ex.duration ?? 45;
+    const defDist = ex.distance ?? '';
+    inputsHtml = `
+      <div class="g4" style="grid-template-columns:1fr 1fr 1fr 1.1fr">
+        <div><label>Min</label><input type="number" id="i-${ex.id}-dur" value="${defDur}" inputmode="numeric"></div>
+        <div><label>km</label><input type="number" id="i-${ex.id}-dist" value="${esc(defDist)}" step="0.1" placeholder="—" inputmode="decimal"></div>
+        <div><label>HR</label><input type="number" id="i-${ex.id}-hr" placeholder="135" inputmode="numeric"></div>
+        <div><label>Feel</label>${feelSel('i-'+ex.id+'-feel')}</div>
+      </div>`;
+  } else if (ex.type === 'bodyweight') {
+    const repLbl = ex.repSuffix ? 'Reps/side' : 'Reps';
+    inputsHtml = `
+      <div class="g4">
+        <div><label>Sets</label><input type="number" id="i-${ex.id}-sets" value="${ex.sets}" inputmode="numeric"></div>
+        <div><label>${repLbl}</label><input type="number" id="i-${ex.id}-reps" value="${ex.reps}" inputmode="numeric"></div>
+        <div><label>Wt</label><div class="bw-pill">BW</div></div>
+        <div><label>Feel</label>${feelSel('i-'+ex.id+'-feel')}</div>
+      </div>`;
+  } else if (ex.type === 'timed') {
+    inputsHtml = `
+      <div class="g4">
+        <div><label>Sets</label><input type="number" id="i-${ex.id}-sets" value="${ex.sets}" inputmode="numeric"></div>
+        <div><label>Sec/side</label><input type="number" id="i-${ex.id}-reps" value="${ex.reps}" inputmode="numeric"></div>
+        <div><label>Wt</label><div class="bw-pill">BW</div></div>
+        <div><label>Feel</label>${feelSel('i-'+ex.id+'-feel')}</div>
+      </div>`;
+  } else {
+    // weighted or weighted_side
+    const w = getStartWeight(ex);
+    const unitLbl = ex.type === 'weighted_side' ? 'kg/side' : 'kg';
+    const repLbl  = ex.repSuffix ? 'Reps/side' : 'Reps';
+    inputsHtml = `
+      <div class="g4">
+        <div><label>Sets</label><input type="number" id="i-${ex.id}-sets" value="${ex.sets}" inputmode="numeric"></div>
+        <div><label>${repLbl}</label><input type="number" id="i-${ex.id}-reps" value="${ex.reps}" inputmode="numeric"></div>
+        <div><label>${unitLbl}</label><input type="number" id="i-${ex.id}-wt" value="${w??''}" step="0.5" inputmode="decimal"></div>
+        <div><label>Feel</label>${feelSel('i-'+ex.id+'-feel')}</div>
+      </div>`;
+  }
+
+  div.innerHTML = `
+    <div class="ex-header">
+      <div class="ex-name">${esc(ex.name)}</div>
+      <button class="skip-btn ${skipClass}" id="skip-${ex.id}" onclick="toggleSkip('${ex.id}')">${skipLabel}</button>
+    </div>
+    ${inputsHtml}`;
+
+  if (skipSet.has(ex.id)) div.classList.add('skipped');
+  return div;
+}
+
+function feelSel(id) {
+  return `<select id="${id}"><option value="">—</option><option value="E">E</option><option value="R">R</option><option value="H">H</option><option value="TH">TH</option></select>`;
+}
+
+function toggleSkip(exId) {
+  if (skipSet.has(exId)) skipSet.delete(exId);
+  else skipSet.add(exId);
+  const day = prog.days[currentDayIdx];
+  const ex = day.exercises.find(e => e.id === exId);
+  if (!ex) return;
+  // Replace only the card
+  const old = ge('card-' + exId);
+  const fresh = buildExCard(ex);
+  old.replaceWith(fresh);
+}
+
+function generateLog() {
+  if (currentDayIdx < 0) return;
+  const day = prog.days[currentDayIdx];
+  const letter = dayLetter(currentDayIdx);
+
+  const date    = gv('f-date') || '—';
+  const dur     = gv('f-dur') || '—';
+  const hr      = gv('f-hr') || '—';
+  const feel    = gv('f-feel') || '—';
+  const sleep   = gv('f-sleep') || '—';
+  const protein = gv('f-protein') || '—';
+  const energy  = gv('f-energy');
+  const warmup  = gv('f-warmup');
+  const pain    = gv('f-pain') || 'None';
+  const notes   = gv('f-notes') || '—';
+
+  const sessionExercises = [];
+  const exLines = [];
+
+  day.exercises.forEach(ex => {
+    if (skipSet.has(ex.id)) return;
+
+    const feel_ex = gv('i-'+ex.id+'-feel') || '—';
+    let exObj = { id: ex.id, name: ex.name, type: ex.type, feel: feel_ex };
+    let line = '';
+
+    if (ex.type === 'cardio') {
+      const d    = gv('i-'+ex.id+'-dur') || ex.duration;
+      const dist = gv('i-'+ex.id+'-dist');
+      const exHR = gv('i-'+ex.id+'-hr');
+      Object.assign(exObj, { duration: +d || null, distance: dist ? +dist : null, hr: exHR ? +exHR : null });
+      const parts = [`${d} min`];
+      if (dist) parts.push(`${dist} km`);
+      if (exHR) parts.push(`HR ${exHR} bpm`);
+      line = `${ex.name} — ${parts.join(' · ')} — ${feel_ex}`;
+    } else if (ex.type === 'bodyweight') {
+      const sets = gv('i-'+ex.id+'-sets') || ex.sets;
+      const reps = gv('i-'+ex.id+'-reps') || ex.reps;
+      const sfx  = ex.repSuffix || '';
+      Object.assign(exObj, { sets:+sets, reps:+reps });
+      line = `${ex.name} — ${sets}×${reps}${sfx} — BW — ${feel_ex}`;
+    } else if (ex.type === 'timed') {
+      const sets = gv('i-'+ex.id+'-sets') || ex.sets;
+      const secs = gv('i-'+ex.id+'-reps') || ex.reps;
+      Object.assign(exObj, { sets:+sets, reps:+secs });
+      line = `${ex.name} — ${sets}×${secs}s/side — BW — ${feel_ex}`;
+    } else {
+      // weighted / weighted_side
+      const sets  = gv('i-'+ex.id+'-sets') || ex.sets;
+      const reps  = gv('i-'+ex.id+'-reps') || ex.reps;
+      const wtRaw = gv('i-'+ex.id+'-wt');
+      const wt    = wtRaw !== '' ? parseFloat(wtRaw) : null;
+      const unit  = ex.type === 'weighted_side' ? 'kg/side' : 'kg';
+      const sfx   = ex.repSuffix || '';
+      Object.assign(exObj, { sets:+sets, reps:+reps, weight:wt, unit });
+      line = `${ex.name} — ${sets}×${reps}${sfx} — ${wt !== null ? wt+' '+unit : '—'} — ${feel_ex}`;
+      // Persist last used weight
+      if (wt !== null) { weights[ex.id] = { weight: wt, loggedAt: Date.now() }; }
+    }
+
+    sessionExercises.push(exObj);
+    exLines.push(line);
+  });
+
+  saveWeights();
+
+  // Build log text
+  const extras = [];
+  if (energy) extras.push(`Pre-session energy: ${energy}`);
+  if (warmup) extras.push(`Warm-up: ${warmup}`);
+
+  const logText = [
+    'SESSION LOG',
+    '──────────────────────────────',
+    `Date: ${date}`,
+    `Day type: ${letter} — ${day.name}`,
+    `Duration: ${dur} min`,
+    `Avg HR: ${hr} bpm`,
+    `Overall feel: ${feel}`,
+    `Sleep last night: ${sleep} hrs`,
+    `Protein target: ${protein}`,
+    ...extras,
+    '',
+    'Exercises:',
+    ...exLines,
+    '',
+    `Pain / discomfort: ${pain}`,
+    `Notes: ${notes}`,
+    '──────────────────────────────',
+  ].join('\n');
+
+  // Save session
+  const session = {
+    id: uid(),
+    date,
+    dayIdx: currentDayIdx,
+    dayLetter: letter,
+    dayName: day.name,
+    duration: +dur || null,
+    avgHR: +hr || null,
+    overallFeel: feel,
+    sleep: +sleep || null,
+    protein,
+    energy,
+    warmup,
+    exercises: sessionExercises,
+    pain,
+    notes,
+    generatedLog: logText,
+    savedAt: Date.now(),
+  };
+  sessions.push(session);
+  saveSessions();
+
+  ge('output-pre').textContent = logText;
+  ge('output-card').classList.remove('hidden');
+  ge('copy-btn').textContent = 'Copy to clipboard';
+  ge('copy-btn').style.background = '';
+  setTimeout(() => ge('output-card').scrollIntoView({ behavior:'smooth', block:'start' }), 60);
+}
+
+function copyLog() {
+  const text = ge('output-pre').textContent;
+  const btn  = ge('copy-btn');
+  const done = () => { btn.textContent = '✓ Copied!'; btn.style.background = '#34C759'; };
+  if (navigator.clipboard && location.protocol !== 'file:') {
+    navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
+  } else {
+    fallbackCopy(text, done);
+  }
+}
+function fallbackCopy(text, cb) {
+  const ta = Object.assign(document.createElement('textarea'), { value: text });
+  Object.assign(ta.style, { position:'fixed', left:'-9999px' });
+  document.body.appendChild(ta); ta.select();
+  try { document.execCommand('copy'); cb(); } catch {}
+  document.body.removeChild(ta);
+}
+function newSession() {
+  ge('output-card').classList.add('hidden');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// 7. PROGRAMME EDITOR
+// ═══════════════════════════════════════════════════════════════════════════════
+function renderProg() {
+  ge('add-day-btn').classList.toggle('hidden', prog.days.length >= 4);
+  const list = ge('prog-list');
+  list.innerHTML = '';
+  prog.days.forEach((day, i) => {
+    const card = document.createElement('div');
+    card.className = 'prog-day';
+    card.id = 'prog-day-' + i;
+
+    const exHtml = day.exercises.map(ex => {
+      const typeBadge = typeBadgeHtml(ex.type);
+      let sub = '';
+      if (ex.type === 'cardio') {
+        sub = `${ex.duration ?? '?'} min default${ex.distance ? ' · ' + ex.distance + ' km' : ''}`;
+      } else if (ex.type === 'bodyweight' || ex.type === 'timed') {
+        sub = `${ex.sets}×${ex.reps}${ex.type === 'timed' ? 's/side' : (ex.repSuffix || '')} · BW`;
+      } else {
+        const unit = ex.type === 'weighted_side' ? 'kg/side' : 'kg';
+        sub = `${ex.sets}×${ex.reps}${ex.repSuffix||''} · ${ex.weight ?? '?'} ${unit}`;
+      }
+      return `
+        <div class="prog-ex-row">
+          <span class="type-badge ${typeBadgeCls(ex.type)}">${typeBadge}</span>
+          <div class="prog-ex-info">
+            <div class="prog-ex-name">${esc(ex.name)}</div>
+            <div class="prog-ex-sub">${esc(sub)}</div>
+          </div>
+          <button class="icon-btn" onclick="openEditEx(${i},'${ex.id}')" title="Edit">✏️</button>
+          <button class="icon-btn" onclick="confirmDeleteEx(${i},'${ex.id}','${esc(ex.name)}')" title="Delete">🗑</button>
+        </div>`;
+    }).join('');
+
+    card.innerHTML = `
+      <div class="prog-day-hdr" id="phdr-${i}" onclick="toggleDayBody(${i})">
+        <div class="prog-day-letter dl-${i}">${dayLetter(i)}</div>
+        <div class="prog-day-name" id="pname-${i}">${esc(day.name)}</div>
+        <div class="prog-hdr-actions">
+          <button class="icon-btn" onclick="event.stopPropagation();startRenameDay(${i})" title="Rename">✏️</button>
+          <button class="icon-btn" onclick="event.stopPropagation();confirmDeleteDay(${i})" title="Delete day" style="color:var(--red)">🗑</button>
+          <span id="pchev-${i}" style="color:var(--text2);font-size:14px">▼</span>
+        </div>
+      </div>
+      <div class="prog-day-body" id="pbody-${i}">
+        ${exHtml}
+        <button class="section-add-btn" onclick="openAddEx(${i})">+ Add exercise</button>
+      </div>`;
+
+    list.appendChild(card);
+  });
+}
+
+function toggleDayBody(i) {
+  const body = ge('pbody-' + i);
+  const hdr  = ge('phdr-' + i);
+  const chev = ge('pchev-' + i);
+  const open = body.classList.toggle('open');
+  hdr.classList.toggle('open', open);
+  chev.textContent = open ? '▲' : '▼';
+}
+
+function typeBadgeHtml(type) {
+  return { weighted:'W', weighted_side:'W/side', cardio:'Cardio', bodyweight:'BW', timed:'Timed' }[type] || type;
+}
+function typeBadgeCls(type) {
+  return { weighted:'tb-w', weighted_side:'tb-ws', cardio:'tb-c', bodyweight:'tb-bw', timed:'tb-bw' }[type] || 'tb-w';
+}
+
+// ── Day rename ──
+function startRenameDay(i) {
+  const nameEl = ge('pname-' + i);
+  const currentName = prog.days[i].name;
+  nameEl.outerHTML = `<input class="prog-day-name-input" id="pname-${i}" value="${esc(currentName)}" onblur="finishRenameDay(${i})" onkeydown="if(event.key==='Enter')finishRenameDay(${i})">`;
+  ge('pname-' + i).focus();
+}
+function finishRenameDay(i) {
+  const input = ge('pname-' + i);
+  if (!input) return;
+  const newName = input.value.trim() || prog.days[i].name;
+  prog.days[i].name = newName;
+  saveProg();
+  renderProg();
+  // Re-render log tabs if on log view
+  renderDayTabs();
+}
+
+// ── Day add / delete ──
+function addDay() {
+  if (prog.days.length >= 4) return;
+  prog.days.push({ id: uid(), name: 'New Day', exercises: [] });
+  saveProg();
+  renderProg();
+  renderDayTabs();
+}
+
+function confirmDeleteDay(i) {
+  showConfirm(
+    'Delete day?',
+    `Delete Day ${dayLetter(i)} (${prog.days[i].name}) and all its exercises? This cannot be undone.`,
+    () => deleteDay(i)
+  );
+}
+function deleteDay(i) {
+  prog.days.splice(i, 1);
+  if (currentDayIdx >= prog.days.length) currentDayIdx = -1;
+  saveProg();
+  renderProg();
+  renderDayTabs();
+  if (currentDayIdx < 0) {
+    ge('log-form').classList.add('hidden');
+    ge('log-placeholder').classList.remove('hidden');
+    ge('fab').classList.add('hidden');
+  }
+}
+
+// ── Exercise modal ──
+let modalDayIdx = -1;
+let modalExId   = null;
+
+function openAddEx(dayIdx) {
+  modalDayIdx = dayIdx;
+  modalExId   = null;
+  ge('modal-ex-title').textContent = 'Add Exercise';
+  ge('modal-ex-name').value = '';
+  ge('modal-ex-type').value = 'weighted';
+  ge('modal-sets').value = '3';
+  ge('modal-reps').value = '10';
+  ge('modal-weight').value = '';
+  ge('modal-dur').value   = '45';
+  ge('modal-dist').value  = '';
+  onModalTypeChange();
+  ge('modal-ex').classList.remove('hidden');
+}
+
+function openEditEx(dayIdx, exId) {
+  const ex = prog.days[dayIdx].exercises.find(e => e.id === exId);
+  if (!ex) return;
+  modalDayIdx = dayIdx;
+  modalExId   = exId;
+  ge('modal-ex-title').textContent = 'Edit Exercise';
+  ge('modal-ex-name').value = ex.name;
+  // Only allow editing 3 main types; bodyweight/timed treated as weighted for editing
+  const editType = ['weighted','weighted_side','cardio'].includes(ex.type) ? ex.type : 'weighted';
+  ge('modal-ex-type').value = editType;
+  ge('modal-sets').value   = ex.sets ?? 3;
+  ge('modal-reps').value   = ex.reps ?? 10;
+  ge('modal-weight').value = ex.weight ?? '';
+  ge('modal-dur').value    = ex.duration ?? 45;
+  ge('modal-dist').value   = ex.distance ?? '';
+  onModalTypeChange();
+  ge('modal-ex').classList.remove('hidden');
+}
+
+function onModalTypeChange() {
+  const type = gv('modal-ex-type');
+  ge('modal-weighted-fields').classList.toggle('hidden', type === 'cardio');
+  ge('modal-cardio-fields').classList.toggle('hidden',   type !== 'cardio');
+}
+
+function saveExerciseModal() {
+  const name = gv('modal-ex-name');
+  if (!name) return;
+  const type = gv('modal-ex-type');
+  const day  = prog.days[modalDayIdx];
+
+  const now = Date.now();
+  if (modalExId) {
+    // Edit existing
+    const ex = day.exercises.find(e => e.id === modalExId);
+    if (!ex) return;
+    const oldWeight = ex.weight;
+    ex.name = name;
+    ex.type = type;
+    if (type === 'cardio') {
+      ex.duration  = +gv('modal-dur') || null;
+      ex.distance  = gv('modal-dist') ? +gv('modal-dist') : null;
+    } else {
+      ex.sets   = +gv('modal-sets') || 3;
+      ex.reps   = +gv('modal-reps') || 10;
+      ex.weight = gv('modal-weight') !== '' ? +gv('modal-weight') : ex.weight;
+    }
+    // Only bump updatedAt if weight changed (forces session to use programme default next time)
+    if (ex.weight !== oldWeight) ex.updatedAt = now;
+  } else {
+    // Add new
+    const ex = { id: uid(), name, type, updatedAt: now };
+    if (type === 'cardio') {
+      ex.duration = +gv('modal-dur') || 45;
+      ex.distance = gv('modal-dist') ? +gv('modal-dist') : null;
+    } else {
+      ex.sets   = +gv('modal-sets') || 3;
+      ex.reps   = +gv('modal-reps') || 10;
+      ex.weight = gv('modal-weight') !== '' ? +gv('modal-weight') : null;
+    }
+    day.exercises.push(ex);
+  }
+
+  saveProg();
+  closeExModal();
+  renderProg();
+  if (currentDayIdx === modalDayIdx) renderExercises();
+}
+
+function closeExModal(e) {
+  if (e && e.target !== ge('modal-ex')) return;
+  ge('modal-ex').classList.add('hidden');
+}
+
+function confirmDeleteEx(dayIdx, exId, name) {
+  showConfirm('Delete exercise?', `Remove "${name}" from this day?`, () => {
+    prog.days[dayIdx].exercises = prog.days[dayIdx].exercises.filter(e => e.id !== exId);
+    saveProg();
+    renderProg();
+    if (currentDayIdx === dayIdx) renderExercises();
+  });
+}
+
+// ── Confirm modal ──
+function showConfirm(title, msg, cb) {
+  ge('confirm-title').textContent = title;
+  ge('confirm-msg').textContent   = msg;
+  confirmCallback = cb;
+  ge('confirm-ok').onclick = () => { cb(); closeConfirm(); };
+  ge('modal-confirm').classList.remove('hidden');
+}
+function closeConfirm(e) {
+  if (e && e.target !== ge('modal-confirm')) return;
+  ge('modal-confirm').classList.add('hidden');
+  confirmCallback = null;
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// 8. PROGRESS CHART
+// ═══════════════════════════════════════════════════════════════════════════════
+function populateExSelect() {
+  const sel = ge('prog-ex-select');
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">Select an exercise…</option>';
+  prog.days.forEach((day, di) => {
+    const grp = document.createElement('optgroup');
+    grp.label = `Day ${dayLetter(di)} — ${day.name}`;
+    day.exercises.forEach(ex => {
+      const opt = document.createElement('option');
+      opt.value = ex.id;
+      opt.textContent = ex.name;
+      if (ex.id === cur) opt.selected = true;
+      grp.appendChild(opt);
+    });
+    sel.appendChild(grp);
+  });
+}
+
+function renderChart() {
+  const exId = gv('prog-ex-select');
+  ge('chart-card').classList.add('hidden');
+  ge('no-data-msg').classList.add('hidden');
+  if (!exId) return;
+
+  // Find exercise definition
+  let exDef = null;
+  prog.days.forEach(d => { d.exercises.forEach(e => { if (e.id === exId) exDef = e; }); });
+  if (!exDef) return;
+
+  // Collect data points from sessions
+  const isCardio = exDef.type === 'cardio';
+  const points = [];
+  sessions.forEach(s => {
+    s.exercises.forEach(se => {
+      if (se.id !== exId) return;
+      if (isCardio) {
+        if (se.duration == null) return;
+        points.push({ date: s.date, val: se.duration, feel: se.feel });
+      } else {
+        if (se.weight == null) return;
+        points.push({ date: s.date, val: se.weight, feel: se.feel });
+      }
+    });
+  });
+  points.sort((a, b) => a.date.localeCompare(b.date));
+
+  if (!points.length) {
+    ge('no-data-msg').classList.remove('hidden');
+    return;
+  }
+
+  ge('chart-card').classList.remove('hidden');
+  ge('chart-title').textContent = isCardio ? 'Duration over time (min)' : 'Weight over time (kg)';
+
+  // Stats
+  const vals = points.map(p => p.val);
+  const latest = vals[vals.length - 1];
+  const peak   = Math.max(...vals);
+  const trend  = vals.length > 1 ? (vals[vals.length-1] - vals[0]) : 0;
+  ge('stat-row').innerHTML = `
+    <div class="stat-box"><div class="stat-val">${latest}</div><div class="stat-lbl">Latest${isCardio?' min':' kg'}</div></div>
+    <div class="stat-box"><div class="stat-val">${peak}</div><div class="stat-lbl">Peak${isCardio?' min':' kg'}</div></div>
+    <div class="stat-box"><div class="stat-val">${trend >= 0 ? '+' : ''}${trend.toFixed(1)}</div><div class="stat-lbl">Overall change</div></div>`;
+
+  // Destroy old chart
+  if (progressChart) { progressChart.destroy(); progressChart = null; }
+
+  // Feel arrows plugin
+  const feelArrowPlugin = {
+    id: 'feelArrows',
+    afterDatasetsDraw(chart) {
+      const ctx  = chart.ctx;
+      const ds   = chart.data.datasets[0];
+      const meta = chart.getDatasetMeta(0);
+      ds.feelData.forEach((feel, idx) => {
+        if (feel === 'R' || !feel) return;
+        const pt = meta.data[idx];
+        if (!pt) return;
+        const isUp = feel === 'E';
+        ctx.save();
+        ctx.font = 'bold 15px sans-serif';
+        ctx.fillStyle = '#1A3A6E';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(isUp ? '↑' : '↓', pt.x, isUp ? pt.y - 16 : pt.y + 16);
+        ctx.restore();
+      });
+    }
+  };
+
+  progressChart = new Chart(ge('prog-chart'), {
+    type: 'line',
+    plugins: [feelArrowPlugin],
+    data: {
+      labels: points.map(p => {
+        const [y, m, d] = p.date.split('-');
+        return `${d}/${m}`;
+      }),
+      datasets: [{
+        data: points.map(p => p.val),
+        feelData: points.map(p => p.feel),
+        borderColor: '#1A3A6E',
+        backgroundColor: 'rgba(26,58,110,.08)',
+        pointBackgroundColor: '#1A3A6E',
+        pointRadius: 5,
+        pointHoverRadius: 7,
+        tension: 0.25,
+        fill: true,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => {
+              const feel = ctx.dataset.feelData[ctx.dataIndex];
+              const feelFull = { E:'E — Easy', R:'R — Right', H:'H — Hard', TH:'TH — Too Hard' };
+              const val = ctx.parsed.y;
+              const unit = isCardio ? 'min' : 'kg';
+              return [`${val} ${unit}`, feel ? feelFull[feel] || feel : ''].filter(Boolean);
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { display: false },
+          ticks: { font: { size: 11 }, maxRotation: 45 }
+        },
+        y: {
+          ticks: { font: { size: 11 } },
+          title: { display: true, text: isCardio ? 'min' : 'kg', font: { size: 11 } }
+        }
+      }
+    }
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// 9. BACKUP / RESTORE
+// ═══════════════════════════════════════════════════════════════════════════════
+function exportBackup() {
+  const payload = { exportedAt: new Date().toISOString(), version: 2, prog, sessions, weights };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+  const url  = URL.createObjectURL(blob);
+  const a    = Object.assign(document.createElement('a'), { href: url, download: `gym-backup-${today()}.json` });
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importBackup(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if (!data.prog || !data.sessions) throw new Error('Invalid backup file');
+      showConfirm(
+        'Restore backup?',
+        'This will replace ALL current data (programme, sessions, weights) with the backup. This cannot be undone.',
+        () => {
+          prog     = data.prog;
+          sessions = data.sessions;
+          weights  = data.weights || {};
+          saveProg(); saveSessions(); saveWeights();
+          currentDayIdx = -1;
+          ge('log-form').classList.add('hidden');
+          ge('log-placeholder').classList.remove('hidden');
+          renderDayTabs();
+          renderProg();
+          alert('Backup restored successfully.');
+        }
+      );
+    } catch { alert('Could not read backup file. Please check it is a valid gym-backup.json.'); }
+    e.target.value = '';
+  };
+  reader.readAsText(file);
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// 10. INIT
+// ═══════════════════════════════════════════════════════════════════════════════
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('./sw.js').catch(() => {});
+}
+
+loadAll();
+renderDayTabs();
+</script>
 </body>
 </html>
-
